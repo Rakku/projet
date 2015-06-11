@@ -55,6 +55,8 @@ def print_travel():
 ###   HEROS
 ###
 
+### STATS
+
 def print_hero_stats():
     hero = Glob.hero
     print " --> Stats :"
@@ -65,15 +67,22 @@ def print_hero_stats():
     print "MR : %i" % hero.mr
     print "EXP : %i" % hero.exp
 
+### ITEMS
+'''
+def print_hero_usables():
+    if a in Glob.hero.items
+'''
 
 def print_hero_inventaire():
     inv = ""
     for key in Glob.hero.items:
         if Glob.hero.items[key] > 0:
-            inv += "%s x%i " % (key, Glob.hero.items[key])
+            inv += "%s x%i " % (key.name, Glob.hero.items[key])
     print " --> Inventaire :"
     print inv
     return inv
+
+### SKILLS
 
 def print_hero_skills():
     str = ""
@@ -128,4 +137,4 @@ def print_enemy_killed(enemy, gain):
     print "You have killed %s !" % enemy.name
     print "You gain %i EXP" % enemy.exp
     if gain:
-        print "You have looted %s !" % gain
+        print "You have looted %s !" % gain.name

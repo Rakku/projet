@@ -21,3 +21,6 @@ class Fighter:
     def attack(self, foe):
         foe.hp -= self.atk
         print "%s deals %i dmg !" % (self.name, self.atk)
+
+    def missing_hp(self):
+        return self.stats['HP'] - self.hp

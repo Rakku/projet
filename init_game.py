@@ -29,6 +29,7 @@ def init():
         spec = choose_spec()
         Glob.hero = Hero(name, spec)
     Glob.hero = Hero('Kaze', 'Mage')
+    Glob.hero.learn_skill('Tourment')
 
     # TESTS MODULE WORLD
     Glob.current_place = generate_map()

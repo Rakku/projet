@@ -42,15 +42,17 @@ while(1):
         write_world(Glob.current_place)
     if 'hero' in cmd:
         print_hero_info()
-    if cmd == 'enemy':
+    if 'enemy' in cmd:
         print_pokedex()
         enemy_name = raw_input("What enemy to study ? ")
         print_enemy(Glob.pokedex[enemy_name])
+    if 'item' in cmd or 'items' in cmd:
+        print_hero_inventaire()
     if 'use' in cmd:
         print_hero_inventaire()
         item_name = raw_input("What item to use ? ")
         Glob.hero.use_item(item_name)
-    if re.search('cast', cmd):
+    if 'cast' in cmd:
         print_hero_skills()
         skill_name = raw_input("What spell to cast ? ")
         Glob.hero.cast_skill(skill_name)

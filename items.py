@@ -1,54 +1,88 @@
 #!/bin/python
 
-
-###########################
-###   EFFECT FUNCS      ###
-###   SEPARATE MODULE ? ###
-###########################
-
-
-# ATTENTION : si target = enemy, no missing_hp() (TODO: faire une classe Fighter, parent commun de Hero, Enemy)
-def gain_hp(target, hp =0):
-    hero = target
-    try:
-        if target.hp == target.stats['HP']:
-            print "No need to use this : FULL HP"
-            return False
-        if target.missing_hp() < hp:
-            target.hp = target.stats['HP']
-        else:
-            target.hp += hp
-        print "%s\nHP : %i / %i" % (target.name, target.hp, target.stats['HP'])
-        return True
-    except ValueError:
-        print "Glob.hero undefined"
+import effects
 
 
 #######################
-###   ITEM FUNCS    ###
+###   CLASSES       ###
+#######################
+'''
+class Item:
+    def __init__(self, name, cost =50, text =''):
+        self.name = name
+        #self.effect = effect        # Pre defined function
+        self.cost = cost
+        self.text = text
+
+    #def use(self):
+'''
+
+
+#######################
+###   ITEM CLASSES  ###
 #######################
 
-def use_potion(target):
-    return gain_hp(target, hp=5)
+class Potion:
+    name = 'potion'
+    text = '+5 HP'
 
+    @staticmethod
+    def use(target, t =text):
+        if effects.gain_hp(target, hp=5):
+            print t
+            return True
+        return False
 
+class Sirop:
+    name = 'sirop'
+    text = '+3 HP'
+
+    @staticmethod
+    def use(target, t =text):
+        if effects.gain_hp(target, hp=3):
+            print t
+            return True
+        return False
+
+'''
+class Sirop:
+    text = '+3 HP'
+
+    @staticmethod
+    def use(target, t =text):
+        print t
+        effects.gain_hp(target, hp=3)
+
+class Sirop:
+    text = '+3 HP'
+
+    @staticmethod
+    def use(target, t =text):
+        print t
+        effects.gain_hp(target, hp=3)
+
+class Sirop:
+    text = '+3 HP'
+
+    @staticmethod
+    def use(target, t =text):
+        print t
+        effects.gain_hp(target, hp=3)
+
+#class Amulette:
+
+'''
 
 ###########################
-###  ITEM=>FUNC TABLES  ###
+###  ITEM=>NAME TABLES  ###
 ###########################
 
-use_item_func = {
-    'potion': use_potion,
-    'sirop': 2
-}
-
-equip_item_func = {
-    'amulette': 2
-}
-
-craft_item_func = {
-    'croc': 1,
-    'poil': 1
+item_table = {
+    Potion: 'potion',
+    Sirop: 'sirop'
+    #'amulette': 2,
+    #'croc': 1,
+    #'poil': 1
 }
 
 
