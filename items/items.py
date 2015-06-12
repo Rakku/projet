@@ -27,22 +27,24 @@ class Potion:
     text = '+5 HP'
 
     @staticmethod
-    def use(target, t =text):
+    def use(target, t=text):
         if effects.gain_hp(target, hp=5):
             print t
             return True
         return False
+
 
 class Sirop:
     name = 'sirop'
     text = '+3 HP'
 
     @staticmethod
-    def use(target, t =text):
+    def use(target, t=text):
         if effects.gain_hp(target, hp=3):
             print t
             return True
         return False
+
 
 '''
 class Sirop:
@@ -78,13 +80,15 @@ class Sirop:
 ###########################
 
 item_table = {
-    Potion: 'potion',
-    Sirop: 'sirop'
-    #'amulette': 2,
-    #'croc': 1,
-    #'poil': 1
+    'potion': Potion,
+    'sirop': Sirop,
+    # 'amulette': 2,
+    # 'croc': 1,
+    # 'poil': 1
 }
 
+clazz = item_table.get("potion")
+obj = clazz()
 
 '''
 class Item:
