@@ -25,12 +25,14 @@
 #####   #####   fighter.py      CHANGE:self.items, ADD:->missing_hp()
 #####   #####   skills.py       CHANGE:name.lower, CHANGE:table = {Obj: level}
 """
-
-from init_game import *
-from world import *
-from enemies import *
-from hero import *
-import re
+from console_ui import print_hero_inventaire, print_hero_skills, print_pokedex, print_hero_info, print_enemy
+from enemies import enemy_classes, Soul
+from fights import fight
+from init_game import init
+from printer import Printer
+from variables import Glob
+from world import glob_travel
+from world import write_world
 
 init()
 

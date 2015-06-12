@@ -1,6 +1,9 @@
 #!/bin/python
+from console_ui import print_fight_choices, print_enemy_killed
 
 from fighter import *
+from items.items import Potion, item_table
+from skills import Tourment, skill_table
 
 hero_base_stats = {
     'Warrior': {
