@@ -2,14 +2,17 @@
 
 import sys
 import inspect
-import pyclbr
-import re
 from random import *
+
 from fighter import *
+from items.items import Potion
+from items.items import Sirop
+from skills import Tourment
+
 
 class Enemy(Fighter):
-    #def __init__(self, name, hp, atk, pwr, pr, mr, exp =None, loot =None, skills =None):
-    def __init__(self, name, stats =None, loot =None, skills =None):
+    # def __init__(self, name, hp, atk, pwr, pr, mr, exp =None, loot =None, skills =None):
+    def __init__(self, name, stats=None, loot=None, skills=None):
         Fighter.__init__(self, name, stats, loot, skills)
 
     ### ???
@@ -17,16 +20,16 @@ class Enemy(Fighter):
     ### TO REDEFINE IN ENEMY CLASSES
     ### ???
     def choose_turn(self):
-        #action = random()
+        # action = random()
         action = 0.1
-        if action < 0.5:    # attack
+        if action < 0.5:  # attack
             return self.attack
         elif action < 0.8:  # skill
             return self.cast_skill
-        return self.use_item    # item
+        return self.use_item  # item
 
     def fight_turn(self, foe):
-        #choose_turn return fonction action
+        # choose_turn return fonction action
         action = self.choose_turn()
         if action == self.attack:
             action(foe)
@@ -44,7 +47,7 @@ class Enemy(Fighter):
 
     def reward(self):
         if self.items:
-            return choice(self.items)    # Item object
+            return choice(self.items)  # Item object
         return None
 
     ### SKILL FUNCS
@@ -88,8 +91,9 @@ class Specter(Enemy):
     skills = [Tourment]
 
     # For instances & function (Instances useless ? => go static functions ?)
-    def __init__(self, name =name, stats =stats, items =items, skills =skills):
+    def __init__(self, name=name, stats=stats, items=items, skills=skills):
         Enemy.__init__(self, name, stats, items, skills)
+
 
 def fill_enemy_classes():
     enemy_list = []
@@ -99,5 +103,6 @@ def fill_enemy_classes():
         if obj.__module__ == __name__ and name != 'Enemy':
             enemy_list.append(obj)
     return enemy_list
+
 
 enemy_classes = fill_enemy_classes()

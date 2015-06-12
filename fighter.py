@@ -5,8 +5,8 @@ from skills import *
 from console_ui import *
 
 class Fighter:
-    #def __init__(self, name, hp, atk, pwr, pr, mr, exp =None, loot =None, skills =None):
-    def __init__(self, name, stats =None, items =None, skills =None):
+    # def __init__(self, name, hp, atk, pwr, pr, mr, exp =None, loot =None, skills =None):
+    def __init__(self, name, stats=None, items=None, skills=None):
         self.name = name
         if stats:
             self.hp = stats['HP']

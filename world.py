@@ -17,8 +17,9 @@ map_enemybook = {
 
 }
 
+
 class Node:
-    def __init__(self, name, size =50, parent =None):
+    def __init__(self, name, size=50, parent=None):
         self.cur = False
         self.name = name
         self.size = size
@@ -35,8 +36,8 @@ class Node:
         self.child_list.append(child)
         child.parent = self
 
-    def is_leaf(self):
-        return not self.child
+    # def is_leaf(self): # FIXME
+    #     return not self.child
 
     def is_root(self):
         return self.parent is None
@@ -60,9 +61,11 @@ class Node:
                 return True, enemy
         return False, None
 
+
 class World(Node):
     def __init__(self, name):
         Node.__init__(self, name)
+
 
 class Map(World):
     def __init__(self, name, world, spawn):
@@ -70,9 +73,11 @@ class Map(World):
         self.enemy_spawn_proba = spawn
         self.enemies = map_enemies[name]
 
+
 class City(Map):
     def __init__(self, name, m):
         Node.__init__(self, name, 10, m)
+
 
 class Place(City):
     def __init__(self, name, city):
@@ -88,6 +93,7 @@ class Place(City):
 #############################################
 #############################################
 '''
+
 
 def generate_map():
     w = World('GBA')
@@ -127,8 +133,8 @@ def glob_travel():
         dest = -1
 
     # Destination : lower in Tree
-    if 0 < dest <= len:
-        Glob.current_place = place.child_list[dest-1]
+    if 0 < dest <= child_count:
+        Glob.current_place = place.child_list[dest - 1]
 
     # Destination : higher in Trees (if exists)
     if dest == 0 and place.parent:
@@ -141,6 +147,7 @@ def glob_travel():
     spawn, enemy = Glob.current_place.spawn_enemy()
     if spawn:
         fight(Glob.hero, enemy)
+
 
 '''
 m.create_child(c)

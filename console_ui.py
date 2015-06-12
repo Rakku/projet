@@ -8,17 +8,20 @@
 
 from variables import Glob
 
+
 class Action:
     def __init__(self, name, func):
         self.name = name
         self.action = func
         self.text = ''
 
+
 def get_string(obj_tab):
-    str = ""
+    obj_str = ""
     for elt in obj_tab:
-        str += "%s " % elt.name
-    return str
+        obj_str += "%s " % elt.name
+    return obj_str
+
 
 #######################
 ###   MAPS          ###
@@ -28,15 +31,16 @@ def get_string(obj_tab):
 def print_map():
     node = Glob.current_place
     for x in range(0, node.size):
-        str = '.'
+        obj_str = '.'
         for y in range(0, node.size):
             if Glob.hero.pos[0] == x and Glob.hero.pos[1] == y:
-                str += "X."
+                obj_str += "X."
             else:
-                str += "_."
+                obj_str += "_."
+
 
 def print_travel():
-    len = Glob.current_place.child_list.__len__()
+    child_len = len(Glob.current_place.child_list)
 
     print "You are now in " + Glob.current_place.name
     print "Where to go ?"
@@ -44,8 +48,9 @@ def print_travel():
         print "--- %s ---" % str(Glob.current_place.parent.__class__)
         print "0 " + Glob.current_place.parent.name
     print "--- %s ---" % str(Glob.current_place.child_list[0].__class__)
-    for i in range(0, len):
-        print str(i+1) + " " + Glob.current_place.child_list[i].name
+    for i in range(0, child_len):
+        print str(i + 1) + " " + Glob.current_place.child_list[i].name
+
 
 #######################
 ###   INFOS         ###
@@ -73,6 +78,7 @@ def print_hero_usables():
     if a in Glob.hero.items
 '''
 
+
 def print_hero_inventaire():
     inv = ""
     for key in Glob.hero.items:
@@ -82,21 +88,23 @@ def print_hero_inventaire():
     print inv
     return inv
 
+
 ### SKILLS
 
 def print_hero_skills():
-    str = ""
+    hero_str = ""
     for elt in Glob.hero.skills:
-        str += "%s " % elt.name
-    print " --> Skills :"
-    print str
-    return str
+        hero_str += "%s " % elt.name
+    print " --> Skills :%s." % hero_str
+    return hero_str
+
 
 def print_hero_info():
     print " %s : %s Niv. %i" % (Glob.hero.name, Glob.hero.spec, Glob.hero.level)
     print_hero_stats()
     print_hero_inventaire()
     print_hero_skills()
+
 
 ###
 ###   ENEMY
@@ -109,13 +117,15 @@ def print_enemy(enemy):
     gain = ""
     for item in enemy.items:
         gain += "%s " % item
-    #gain = get_string(enemy.loot)
+    # gain = get_string(enemy.loot)
     print "Can drop : %s" % gain
+
 
 def print_pokedex():
     pokedex = Glob.pokedex
     for key in pokedex:
         print pokedex[key].name
+
 
 #######################
 ###   FIGHTS        ###
@@ -132,6 +142,7 @@ def print_fight_choices():
     if hero.items:
         i += 1
         print "%i Items" % i
+
 
 def print_enemy_killed(enemy, gain):
     print "You have killed %s !" % enemy.name

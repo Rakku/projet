@@ -15,7 +15,7 @@
 #####   USEFUL : if hasattr(obj, 'attribute') [ better try + except ]
 
 #####   DIFF FILES (8) :
-#####   #####   main.py         calls adapted to changes below, TEST:print_enemy_classes()
+#####   #####   items.py         calls adapted to changes below, TEST:print_enemy_classes()
 #####   #####   init_game.py    calls adapted to changes below
 #####   #####   world.py        calls adapted to changes below, include enemies (instead of enemy_data)
 #####   #####   fights.py       CHANGE:fight(hero, enemy)
@@ -35,12 +35,11 @@ import re
 init()
 
 success = 0
-for i in range(0,50):
+for i in range(0, 50):
     spawn, enemy = Glob.current_place.spawn_enemy()
     if spawn:
         success += 1
 print str(success) + "/50"
-
 
 print "You are in " + Glob.current_place.name
 
@@ -49,7 +48,7 @@ for e in enemy_classes:
 
 fight(Glob.hero, Soul())
 
-while(1):
+while True:
     cmd = raw_input()
     action = cmd.split()
     if 'move' in cmd:
@@ -62,7 +61,10 @@ while(1):
     if 'enemy' in cmd:
         print_pokedex()
         enemy_name = raw_input("What enemy to study ? ").lower()
-        print_enemy(Glob.pokedex[enemy_name])
+        try:
+            print_enemy(Glob.pokedex[enemy_name])
+        except KeyError:
+            Printer.err("%s was not in my pokedex..." % enemy_name)
     if 'item' in cmd or 'items' in cmd:
         print_hero_inventaire()
     if 'use' in cmd:
@@ -75,7 +77,6 @@ while(1):
         skill_name = raw_input("What spell to cast ? ").lower()
         Glob.hero.cast_skill(skill_name)
         Glob.current_place.spawn_enemy()
-
 
 '''
 print "GAME START !"

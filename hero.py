@@ -41,8 +41,9 @@ hero_base_skills = {
     'Assassin': {Tourment: 1}
 }
 
+
 class Hero(Fighter):
-    def __init__(self, name, spec, items ={}, skills ={}):
+    def __init__(self, name, spec, items=None, skills=None):
         Fighter.__init__(self, name, hero_base_stats[spec], hero_base_items[spec], hero_base_skills[spec])
 
         self.spec = spec
@@ -57,8 +58,16 @@ class Hero(Fighter):
 
         self.pos = [0, 0]
 
+        if items is None:
+            items = {}
+        self.items = items
+
+        if skills is None:
+            skills = {}
+        self.skills = skills
+
     ### GENERICS
-    # dico = { Object : 'name' }
+    # dico = { 'name': Object }
     def search(self, name, dico):
         for obj in dico.keys():
             if obj.name == name:
@@ -69,18 +78,17 @@ class Hero(Fighter):
     '''
     DEFINED in fighter.py
     def missing_hp(self):
-        return self.stats['HP'] - self.hp
+
     '''
 
     ### ITEM FUNCS
     def search_item(self, item_name):
         return self.search(item_name, self.items)
 
-
-    def add_item(self, item, qtity =1):
-        #item = self.search(item_name, item_table)
+    def add_item(self, item_name, qtity=1):
+        item = self.search(item_name, item_table)
         if item is not None:
-            #print item.name
+            # print item.name
             if item in self.items.keys() and self.items[item] > 0:
                 self.items[item] += qtity
             else:
@@ -105,7 +113,7 @@ class Hero(Fighter):
 
     def learn_skill(self, skill_name):
         skill = self.search(skill_name, skill_table)
-        if skill:# is not None:
+        if skill:  # is not None:
             known = self.search(skill_name, self.skills)
             if not known:
                 self.skills[skill] = 1
@@ -116,7 +124,7 @@ class Hero(Fighter):
     def cast_skill(self, skill_name):
         skill = self.search_skill(skill_name)
         if skill is not None:
-            if skill.cast():      # Func use_fireball, use_iceball, ...
+            if skill.cast():  # Func use_fireball, use_iceball, ...
                 print "Skill reached target !"
             else:
                 print "Skill missed !"
@@ -136,4 +144,3 @@ class Hero(Fighter):
         # wait
         raw_input()
         self.attack(enemy)
-

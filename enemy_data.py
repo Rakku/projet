@@ -4,8 +4,6 @@
 # import Gameplay data :
 # class Module {}
 # items = Module(...)
-from skills import *
-from items import *
 from enemies import *
 
 
@@ -23,8 +21,9 @@ class Soul(Enemy):
     skills = [Tourment]
 
     # For instances & function (Instances useless ? => go static functions ?)
-    def __init__(self, name =name, stats =stats, items =items, skills =skills):
+    def __init__(self, name=name, stats=stats, items=items, skills=skills):
         Enemy.__init__(self, name, stats, items, skills)
+
 
 class Specter(Enemy):
     name = 'Specter'
@@ -40,8 +39,10 @@ class Specter(Enemy):
     skills = [Tourment]
 
     # For instances & function (Instances useless ? => go static functions ?)
-    def __init__(self, name =name, stats =stats, items =items, skills =skills):
+    def __init__(self, name=name, stats=stats, items=items, skills=skills):
         Enemy.__init__(self, name, stats, items, skills)
+
+
 '''
 items = {
     'Soul': [Potion, Sirop],

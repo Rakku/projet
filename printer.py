@@ -1,6 +1,7 @@
 __author__ = 'PLNech'
 
-class Printer():
+# noinspection PyClassHasNoInit
+class Printer:
     HEADER = '\033[95m'
     END = '\033[0m'
 
