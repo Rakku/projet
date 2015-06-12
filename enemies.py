@@ -70,12 +70,25 @@ class Soul(Enemy):
         'MR': 5,
         'EXP': 10
     }
+    # items = ["Potion", "Sirop"] # TODO: Use strings instead of useless dependencies
     items = [Potion, Sirop]
     skills = [Tourment]
 
     # For instances & function (Instances useless ? => go static functions ?)
-    def __init__(self, name =name, stats =stats, items =items, skills =skills):
+    def __init__(self, name=name, stats=stats, items=items, skills=skills):
+        # items = load_classes(items) # TODO
         Enemy.__init__(self, name, stats, items, skills)
+
+    @staticmethod
+    def load_classes(items):
+        new_items = []
+        for item in items:
+            pass  # TODO: Remove (the pass is here to avoid a Syntax error :))
+            # clazz = my_import('items.' + item) # TODO: Code a method to import a class dynamically
+            # obj = clazz()
+            # new_items.append(obj)
+        return new_items
+
 
 class Specter(Enemy):
     name = 'specter'
