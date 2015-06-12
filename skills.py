@@ -3,7 +3,7 @@
 import effects
 
 class Tourment:
-    name = 'Tourment'
+    name = 'tourment'
     text = '5 dmg'
 
     @staticmethod
@@ -18,7 +18,7 @@ class Tourment:
 ###########################
 
 skill_table = {
-    Tourment: 'Tourment'
+    Tourment: 1
 }
 '''
     'Cri': 1,

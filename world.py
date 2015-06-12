@@ -2,15 +2,15 @@
 # coding=utf-8
 
 from fights import *
-import enemy_data
+from enemies import *
 from hero import *
 from random import *
 #from console_ui import *
 
 map_enemies = {
-    'Boktai': [enemy_data.Soul],
-    'Zelda': [enemy_data.Soul],
-    'Castlevania': [enemy_data.Soul]
+    'Boktai': [Soul],
+    'Zelda': [Soul],
+    'Castlevania': [Soul]
 }
 
 map_enemybook = {
@@ -49,7 +49,7 @@ class Node:
                 enemy = choice(self.enemies)
                 '''
 
-                for e in dir(enemy_data):
+                for e in inspect.getmembers:
                     if e.name == enemy.name:
                         #pokedex
                         print_enemy(e)
@@ -68,7 +68,7 @@ class Map(World):
     def __init__(self, name, world, spawn):
         Node.__init__(self, name, 25, world)
         self.enemy_spawn_proba = spawn
-        self.enemies = map_enemies[name]w
+        self.enemies = map_enemies[name]
 
 class City(Map):
     def __init__(self, name, m):
@@ -140,7 +140,7 @@ def glob_travel():
     # Wanna fight ?
     spawn, enemy = Glob.current_place.spawn_enemy()
     if spawn:
-        fight(enemy)
+        fight(Glob.hero, enemy)
 
 '''
 m.create_child(c)

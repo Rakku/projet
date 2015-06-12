@@ -29,44 +29,48 @@ hero_base_stats = {
     }
 }
 
+hero_base_items = {
+    'Warrior': {Potion: 2},
+    'Mage': {Potion: 1},
+    'Assassin': {Potion: 1}
+}
+
+hero_base_skills = {
+    'Warrior': {},
+    'Mage': {Tourment: 1},
+    'Assassin': {Tourment: 1}
+}
+
 class Hero(Fighter):
     def __init__(self, name, spec, items ={}, skills ={}):
-        Fighter.__init__(self, name, hero_base_stats[spec], items, skills)
+        Fighter.__init__(self, name, hero_base_stats[spec], hero_base_items[spec], hero_base_skills[spec])
 
         self.spec = spec
-
-        '''
-        self.stats = hero_base_stats[spec]
-        self.hp = self.stats['HP']
-        self.atk = self.stats['ATK']
-        self.pwr = self.stats['PWR']
-        self.res = self.stats['RES']
-        self.mr = self.stats['MR']
-        self.exp = self.stats['EXP']
-        '''
         self.level = 1
 
-        # dict (item_name : qtity)
+        # dict (Item : qtity)
         self.items = {
-            Potion : 2
+            Potion: 2
         }
-        #self.equipped = []
-        # List of Skill objects
+        # dict (Skill : level)
         self.skills = skills
 
         self.pos = [0, 0]
 
     ### GENERICS
-    # list = { Object : 'name' }
-    def search(self, name, list):
-        for obj in list.keys():
+    # dico = { Object : 'name' }
+    def search(self, name, dico):
+        for obj in dico.keys():
             if obj.name == name:
                 return obj
         return None
 
     ### STAT FUNCS
+    '''
+    DEFINED in fighter.py
     def missing_hp(self):
         return self.stats['HP'] - self.hp
+    '''
 
     ### ITEM FUNCS
     def search_item(self, item_name):
@@ -101,16 +105,20 @@ class Hero(Fighter):
 
     def learn_skill(self, skill_name):
         skill = self.search(skill_name, skill_table)
-        if skill is not None:
-            self.skills[skill] = 1
-            print "%s a appris un sort : %s %i" % (self.name, skill.name, self.skills[skill])
+        if skill:# is not None:
+            known = self.search(skill_name, self.skills)
+            if not known:
+                self.skills[skill] = 1
+                print "%s a appris un sort : %s %i" % (self.name, skill.name, self.skills[skill])
+            else:
+                print "%s connait deja %s %i" % (self.name, skill.name, self.skills[skill])
 
     def cast_skill(self, skill_name):
         skill = self.search_skill(skill_name)
         if skill is not None:
             if skill.cast():      # Func use_fireball, use_iceball, ...
                 print "Skill reached target !"
-            else :
+            else:
                 print "Skill missed !"
 
     ### FIGHT FUNCS
