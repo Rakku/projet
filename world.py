@@ -68,7 +68,7 @@ class Map(World):
     def __init__(self, name, world, spawn):
         Node.__init__(self, name, 25, world)
         self.enemy_spawn_proba = spawn
-        self.enemies = map_enemies[name]
+        self.enemies = map_enemies[name]w
 
 class City(Map):
     def __init__(self, name, m):
