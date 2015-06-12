@@ -2,15 +2,19 @@
 # coding=utf-8
 
 from fights import *
-from enemies import *
+import enemy_data
 from hero import *
 from random import *
 #from console_ui import *
 
 map_enemies = {
-    'Boktai': ['Soul'],
-    'Zelda': ['Soul'],
-    'Castlevania': ['Soul']
+    'Boktai': [enemy_data.Soul],
+    'Zelda': [enemy_data.Soul],
+    'Castlevania': [enemy_data.Soul]
+}
+
+map_enemybook = {
+
 }
 
 class Node:
@@ -42,7 +46,14 @@ class Node:
         if self.enemies:
             if random() < self.enemy_spawn_proba:
                 print "An enemy has spawned !"
-                enemy = Enemy(choice(self.enemies))
+                enemy = choice(self.enemies)
+                '''
+
+                for e in dir(enemy_data):
+                    if e.name == enemy.name:
+                        #pokedex
+                        print_enemy(e)
+                '''
                 if not enemy.name in Glob.pokedex.keys():
                     Glob.pokedex[enemy.name] = enemy
                 print_enemy(enemy)

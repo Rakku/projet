@@ -2,20 +2,12 @@
 
 from random import *
 from fighter import *
-from enemy_data import *
 
 
 
 class Enemy(Fighter):
     #def __init__(self, name, hp, atk, pwr, pr, mr, exp =None, loot =None, skills =None):
     def __init__(self, name, stats =None, loot =None, skills =None):
-        if not stats:
-            stats = enemy_base_stats[name]
-        if not loot:
-            loot = enemy_items[name]
-        if not skills:
-            skills = enemy_skills[name]
-
         Fighter.__init__(self, name, stats, loot, skills)
     '''
         self.name = name
@@ -29,6 +21,10 @@ class Enemy(Fighter):
         self.loot = loot
         self.skills = skills
     '''
+
+    def use_item(self):
+        item = choice(self.loot)
+        item.use(self)
 
     def fight_turn(self, foe):
         self.attack(foe)

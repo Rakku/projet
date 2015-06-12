@@ -1,7 +1,5 @@
 #!/bin/python
 
-
-# ATTENTION : si target = enemy, no missing_hp() (TODO: faire une classe Fighter, parent commun de Hero, Enemy)
 def gain_hp(target, hp =0):
     hero = target
     if target.hp == target.stats['HP']:

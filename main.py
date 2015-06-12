@@ -31,6 +31,7 @@ print str(success) + "/50"
 
 print "You are in " + Glob.current_place.name
 
+fight(enemy_data.Soul())
 
 while(1):
     cmd = raw_input()
@@ -52,10 +53,12 @@ while(1):
         print_hero_inventaire()
         item_name = raw_input("What item to use ? ")
         Glob.hero.use_item(item_name)
+        Glob.current_place.spawn_enemy()
     if 'cast' in cmd:
         print_hero_skills()
         skill_name = raw_input("What spell to cast ? ")
         Glob.hero.cast_skill(skill_name)
+        Glob.current_place.spawn_enemy()
 
 
 '''

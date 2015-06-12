@@ -35,5 +35,5 @@ def init():
     Glob.current_place = generate_map()
     write_world(Glob.current_place)
 
-    Glob.pokedex = {'Specter' : Enemy('Specter')
+    Glob.pokedex = {'Specter': enemy_data.Specter
                     }

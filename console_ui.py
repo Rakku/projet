@@ -104,11 +104,11 @@ def print_hero_info():
 
 def print_enemy(enemy):
     print "--- " + enemy.name
-    for key in enemy.stats:
-        print key + " = " + str(enemy.stats[key])
+    for stat in enemy.stats:
+        print stat + " = " + str(enemy.stats[stat])
     gain = ""
-    for elt in enemy.loot:
-        gain += "%s " % elt
+    for item in enemy.items:
+        gain += "%s " % item
     #gain = get_string(enemy.loot)
     print "Can drop : %s" % gain
 

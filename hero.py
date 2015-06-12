@@ -52,7 +52,7 @@ class Hero(Fighter):
         }
         #self.equipped = []
         # List of Skill objects
-        #self.skills = skills
+        self.skills = skills
 
         self.pos = [0, 0]
 
