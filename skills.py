@@ -1,9 +1,10 @@
 #!/bin/python
 
 import effects
+from named import Named
 
-class Tourment:
-    name = 'tourment'
+
+class Tourment(Named):
     text = '5 dmg'
 
     @staticmethod

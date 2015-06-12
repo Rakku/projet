@@ -1,11 +1,14 @@
 #!/bin/python
 # coding=utf-8
+from console_ui import print_enemy, print_travel, print_map
 
 from fights import *
 from enemies import *
-from hero import *
-from random import *
-#from console_ui import *
+
+
+# from console_ui import *
+
+from variables import Glob
 
 map_enemies = {
     'Boktai': [Soul],
@@ -108,17 +111,20 @@ def generate_map():
     shop = Place('Boutique', city_hyrule)
     return w
 
+
 def write_world(world):
     print world.__class__.__name__ + " : " + world.name
-    for child in world.child_list:        
+    for child in world.child_list:
         write_world(child)
-#    print m.__class__.__name__ + " : " + m.name
+
+
+# print m.__class__.__name__ + " : " + m.name
 
 # Teleport to any zone directly connected to current zone
 def glob_travel():
     # Readability
     place = Glob.current_place
-    len = place.child_list.__len__()
+    child_count = place.child_list.__len__()
 
     # Print console map
     print_map()
