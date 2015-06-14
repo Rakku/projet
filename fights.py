@@ -1,5 +1,8 @@
 #!/bin/python
 
+# TODO : LATER
+# TODO : RE-ADAPT TO stats[] / max_stats[] FORMAT (currently hp / stat['HP'])
+
 # need instance of Enemy
 def fight(hero, enemy):
     while enemy.hp > 0 and hero.hp > 0:

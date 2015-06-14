@@ -43,7 +43,7 @@ class Printer:
     @staticmethod
     def info(msg):
         colored_msg = Printer.blue(msg)
-        print(colored_msg)
+        # print(colored_msg)
         return colored_msg
 
     @staticmethod
@@ -57,6 +57,14 @@ class Printer:
         colored_msg = Printer.red(msg)
         print(colored_msg)
         return colored_msg
+
+    @staticmethod
+    def fail():
+        return Printer.err("FAIL")
+
+    @staticmethod
+    def ok():
+        return Printer.green("OK")
 
     @staticmethod
     def if_bigger(msg, v1, v2):

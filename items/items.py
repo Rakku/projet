@@ -1,46 +1,66 @@
 #!/bin/python
 
+import sys
+import inspect
+
 import effects
+from named import Named
 
 
 #######################
 ###   CLASSES       ###
 #######################
-'''
-class Item:
-    def __init__(self, name, cost =50, text =''):
-        self.name = name
-        #self.effect = effect        # Pre defined function
+
+class Item(Named):
+    def __init__(self, cost=50, text=''):
+
+        # self.effect = effect        # Pre defined function
         self.cost = cost
+        if text == '':
+            text = "+ %i %s" % (self.value, self.stat)
         self.text = text
 
-    #def use(self):
-'''
+        #def use(self):
 
 
 #######################
 ###   ITEM CLASSES  ###
 #######################
 
-class Potion:
-    name = 'potion'
-    text = '+5 HP'
+class Potion(Item):
+    value = 5
+    stat = 'HP'
+
 
     @staticmethod
-    def use(target, t=text):
-        if effects.gain_hp(target, hp=5):
-            print t
+    def use(stat, max_stat):
+        # return new_stat[stat]
+        new_hp = effects.gain_stat(stat, Potion.value, max_stat)
+        return new_hp
+
+    @staticmethod
+    def useitem(target=None, v=value, t=stat):
+        #return hp + 5
+        # print t
+        # TODO : below
+        # if target:
+        #   target.gain_hp(value)
+        if effects.gain_hp(target, value=v):
             return True
         return False
 
 
-class Sirop:
-    name = 'sirop'
-    text = '+3 HP'
+class Sirop(Item):
+    value = 3
+    stat = 'HP'
 
     @staticmethod
-    def use(target, t=text):
-        if effects.gain_hp(target, hp=3):
+    def use(stat, max_stat):
+        return effects.gain_stat(stat, Sirop.value, max_stat)
+
+    @staticmethod
+    def useitem(target=None, v=value, t=stat):
+        if effects.gain_hp(target, value=v):
             print t
             return True
         return False
@@ -76,30 +96,26 @@ class Sirop:
 '''
 
 ###########################
-###  ITEM=>NAME TABLES  ###
+###  NAME=>ITEM TABLES  ###
 ###########################
 
-item_table = {
-    'potion': Potion,
-    'sirop': Sirop,
-    # 'amulette': 2,
-    # 'croc': 1,
-    # 'poil': 1
-}
+def fill_item_classes():
+    list = []
+    # name = Soul, obj = enemies.Soul
+    for name, obj in inspect.getmembers(sys.modules[__name__], inspect.isclass):
+        print name, obj
+        if obj.__module__ == __name__ and name != 'Item':
+            list.append(obj())
+    return list
 
-clazz = item_table.get("potion")
-obj = clazz()
 
-'''
-class Item:
-    def __init__(self, name, type, effect):
-        self.name = name
-        self.type = type
-        self.effect = effect
+item_classes = fill_item_classes()
 
-potion = Item('potion', 'common', ['hp', '+', '20'])
-sirop = Item('sirop', 'common', ['mp', '+', '40'])
-amulette = Item('amulette', 'common', ['mr', '+', '10'])
-croc = Item('croc', 'common', ['atk', '+', '5'])
-poil = Item('poil', 'frequent', [])
-'''
+#
+# item_table = {
+#     'potion': Potion,
+#     'sirop': Sirop,
+#     # 'amulette': 2,
+#     # 'croc': 1,
+#     # 'poil': 1
+# }

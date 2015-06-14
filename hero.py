@@ -2,8 +2,15 @@
 from console_ui import print_fight_choices, print_enemy_killed
 
 from fighter import *
-from items.items import Potion, item_table
-from skills import Tourment, skill_table
+from items.items import Potion
+from skills import Tourment
+from load import my_import
+
+
+# TODO : fight Funcs (LATER)
+
+def load_hero_skill(skill_name):
+    return my_import('skills', skill_name)
 
 hero_base_stats = {
     'Warrior': {
@@ -32,114 +39,94 @@ hero_base_stats = {
     }
 }
 
-hero_base_items = {
-    'Warrior': {Potion: 2},
-    'Mage': {Potion: 1},
-    'Assassin': {Potion: 1}
+base_items = {
+    'Warrior': {"Potion": 2},
+    'Mage': {"Potion": 1},
+    'Assassin': {"Potion": 1}
 }
 
-hero_base_skills = {
+base_skills = {
     'Warrior': {},
-    'Mage': {Tourment: 1},
-    'Assassin': {Tourment: 1}
+    'Mage': {"Tourment": 1},
+    'Assassin': {"Tourment": 1}
 }
 
 
 class Hero(Fighter):
-    def __init__(self, name, spec, items=None, skills=None):
-        Fighter.__init__(self, name, hero_base_stats[spec], hero_base_items[spec], hero_base_skills[spec])
+    def __init__(self, name='Heroik', spec='Mage', items=None, skills=None):
+        # TODO : check init structs above
+        Fighter.__init__(self, hero_base_stats[spec], base_items[spec], base_skills[spec])
 
+        self.name = name
         self.spec = spec
         self.level = 1
 
-        # dict (Item : qtity)
-        self.items = {
-            Potion: 2
-        }
-        # dict (Skill : level)
-        self.skills = skills
-
         self.pos = [0, 0]
 
-        if items is None:
-            items = {}
-        self.items = items
-
-        if skills is None:
-            skills = {}
-        self.skills = skills
-
     ### GENERICS
-    # dico = { 'name': Object }
-    def search(self, name, dico):
-        for obj in dico.keys():
-            if obj.name == name:
-                return obj
-        return None
 
     ### STAT FUNCS
-    '''
-    DEFINED in fighter.py
-    def missing_hp(self):
 
-    '''
 
     ### ITEM FUNCS
-    def search_item(self, item_name):
-        return self.search(item_name, self.items)
+    def know_item(self, item_name):
+        return item_name in self.items#.keys()
+
+    def has_item(self, name):
+        # name = name.class_name()
+        return self.know_item(name) and self.items[name] > 0
 
     def add_item(self, item_name, qtity=1):
-        item = self.search(item_name, item_table)
-        if item is not None:
-            # print item.name
-            if item in self.items.keys() and self.items[item] > 0:
-                self.items[item] += qtity
-            else:
-                self.items[item] = qtity
+        if self.has_item(item_name):
+            self.items[item_name] += qtity
+        else:
+            self.items[item_name] = qtity
 
     def use_item(self, item_name):
-        item = self.search_item(item_name)
-        if item is not None:
-            if self.items[item] > 0:
-                if item.use(self):
-                    self.items[item] -= 1
-                else:
-                    print "can't use %s !" % item.name
+        item = my_import('items.items', item_name)
+        if item and self.has_item(item_name):
+            if not self.full_stat(item.stat):
+                self.stats[item.stat] = item.use(self.stats[item.stat], self.max_stats[item.stat])
+                self.items[item_name] -= 1
+                print "%s used !" % item_name
             else:
-                print "Don't have any of that (%s)" % item_name
+                print "Can't use that : %s full" % item.stat
         else:
-            print "Wat is dat ?!"
+            print "Don't have any of that (%s)" % item_name
 
-    ### SKILL FUNCS
-    def search_skill(self, skill_name):
-        return self.search(skill_name, self.skills)
+    ### SKILL FUNCS #
+    def know_skill(self, skill_name):
+        return skill_name in self.skills.keys()
+
 
     def learn_skill(self, skill_name):
-        skill = self.search(skill_name, skill_table)
-        if skill:  # is not None:
-            known = self.search(skill_name, self.skills)
-            if not known:
-                self.skills[skill] = 1
-                print "%s a appris un sort : %s %i" % (self.name, skill.name, self.skills[skill])
+        skill = load_hero_skill(skill_name)
+        if skill:
+            if not self.know_skill(skill_name):
+                self.skills[skill_name] = 1
+                print "%s a appris un sort : %s %i" % (self.name, skill_name, self.skills[skill_name])
             else:
-                print "%s connait deja %s %i" % (self.name, skill.name, self.skills[skill])
+                print "%s connait deja %s %i" % (self.name, skill_name, self.skills[skill_name])
 
     def cast_skill(self, skill_name):
-        skill = self.search_skill(skill_name)
-        if skill is not None:
-            if skill.cast():  # Func use_fireball, use_iceball, ...
+        if self.know_skill(skill_name):
+            skill = my_import('skills', skill_name)
+            stat = self.stats[skill.stat]
+            new_stat = skill.cast(stat)
+
+            if new_stat != stat:
                 print "Skill reached target !"
             else:
                 print "Skill missed !"
 
-    ### FIGHT FUNCS
+    ### FIGHT FUNCS #TODO : tests
     def attack(self, enemy):
         enemy.hp -= self.atk
 
     def kill(self, enemy):
         gain = enemy.reward()
         self.exp += enemy.exp
-        self.add_item(gain)
+        self.add_item(gain.class_name())
         print_enemy_killed(enemy, gain)
 
     def fight_turn(self, enemy):

@@ -1,5 +1,6 @@
 #!/bin/python
 
+# TODO : IF REQUIRED
 #######################
 ###   CONSOLE PRINTING
 ###   LIB OF STANDALONE FUNCS
@@ -21,6 +22,7 @@ def get_string(obj_tab):
     for elt in obj_tab:
         obj_str += "%s " % elt.name
     return obj_str
+
 
 
 #######################
@@ -53,7 +55,7 @@ def print_travel():
 
 
 #######################
-###   INFOS         ###
+###   FIGHTERS      ###
 #######################
 
 ###
@@ -83,7 +85,7 @@ def print_hero_inventaire():
     inv = ""
     for key in Glob.hero.items:
         if Glob.hero.items[key] > 0:
-            inv += "%s x%i " % (key.name, Glob.hero.items[key])
+            inv += "%s x%i " % (key, Glob.hero.items[key])
     print " --> Inventaire :"
     print inv
     return inv
@@ -94,7 +96,7 @@ def print_hero_inventaire():
 def print_hero_skills():
     hero_str = ""
     for elt in Glob.hero.skills:
-        hero_str += "%s " % elt.name
+        hero_str += "%s " % elt
     print " --> Skills :%s." % hero_str
     return hero_str
 
@@ -111,9 +113,9 @@ def print_hero_info():
 ###
 
 def print_enemy(enemy):
-    print "--- " + enemy.name
-    for stat in enemy.stats:
-        print stat + " = " + str(enemy.stats[stat])
+    print "--- " + enemy.class_name()
+    for stat in enemy.stats.keys():
+        print "%s = %i" % (stat, enemy.stats[stat])
     gain = ""
     for item in enemy.items:
         gain += "%s " % item
@@ -124,7 +126,7 @@ def print_enemy(enemy):
 def print_pokedex():
     pokedex = Glob.pokedex
     for key in pokedex:
-        print pokedex[key].name
+        print key
 
 
 #######################
@@ -145,7 +147,7 @@ def print_fight_choices():
 
 
 def print_enemy_killed(enemy, gain):
-    print "You have killed %s !" % enemy.name
+    print "You have killed %s !" % enemy.class_name()
     print "You gain %i EXP" % enemy.exp
     if gain:
-        print "You have looted %s !" % gain.name
+        print "You have looted %s !" % gain.class_name()

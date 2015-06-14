@@ -1,5 +1,7 @@
 #!/bin/python
 
+# TODO : LATER
+
 from hero import *
 from world import *
 
@@ -33,6 +35,7 @@ def init():
     Glob.hero = Hero('Kaze', 'Mage')
     Glob.hero.learn_skill('Tourment')
 
+    print "MAP GENERATION"
     # TESTS MODULE WORLD
     Glob.current_place = generate_map()
     write_world(Glob.current_place)

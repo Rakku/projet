@@ -2,18 +2,20 @@
 # coding=utf-8
 from console_ui import print_enemy, print_travel, print_map
 
+from load import load_enemies, my_import
 from fights import *
 from enemies import *
 
+# TODO : LATER
 
 # from console_ui import *
 
 from variables import Glob
 
 map_enemies = {
-    'Boktai': [Soul],
-    'Zelda': [Soul],
-    'Castlevania': [Soul]
+    'Boktai': ['Soul'],
+    'Zelda': ['Soul'],
+    'Castlevania': ['Soul']
 }
 
 map_enemybook = {
@@ -22,14 +24,14 @@ map_enemybook = {
 
 
 class Node:
-    def __init__(self, name, size=50, parent=None):
+    def __init__(self, name, size=50, parent=None, enemy_spawn_proba=0, enemies=[]):
         self.cur = False
         self.name = name
         self.size = size
         self.parent = parent
         self.child_list = []
-        self.enemy_spawn_proba = 0
-        self.enemies = None
+        self.enemy_spawn_proba = enemy_spawn_proba
+        self.enemies = enemies
 
         # Family bounds
         if parent:
@@ -40,7 +42,7 @@ class Node:
         child.parent = self
 
     # def is_leaf(self): # FIXME
-    #     return not self.child
+    # return not self.child
 
     def is_root(self):
         return self.parent is None
@@ -50,16 +52,12 @@ class Node:
         if self.enemies:
             if random() < self.enemy_spawn_proba:
                 print "An enemy has spawned !"
-                enemy = choice(self.enemies)
-                '''
+                enemy_name = choice(self.enemies)
+                enemy = my_import('enemies', enemy_name)
 
-                for e in inspect.getmembers:
-                    if e.name == enemy.name:
-                        #pokedex
-                        print_enemy(e)
-                '''
-                if not enemy.name in Glob.pokedex.keys():
-                    Glob.pokedex[enemy.name] = enemy
+                if not enemy_name in Glob.pokedex.keys():
+                    Glob.pokedex[enemy_name] = my_import('enemies', enemy_name)
+
                 print_enemy(enemy)
                 return True, enemy
         return False, None
@@ -72,9 +70,11 @@ class World(Node):
 
 class Map(World):
     def __init__(self, name, world, spawn):
-        Node.__init__(self, name, 25, world)
-        self.enemy_spawn_proba = spawn
-        self.enemies = map_enemies[name]
+        enemies = map_enemies[name]
+        # enemies = load_map_enemies(enemies)
+        for e in enemies:
+            print e
+        Node.__init__(self, name, 25, world, spawn, enemies)
 
 
 class City(Map):
@@ -152,7 +152,7 @@ def glob_travel():
     # Wanna fight ?
     spawn, enemy = Glob.current_place.spawn_enemy()
     if spawn:
-        fight(Glob.hero, enemy)
+        fight(Glob.hero, enemy())
 
 
 '''
