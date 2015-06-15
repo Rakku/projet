@@ -26,3 +26,14 @@ class TestItem(TestCase):
             self.assertTrue(diff_stat == item.value or new_stat == self.max_stat or new_stat == 0, msg="+ %i stat(%i), "
                                                                                        "stat = %i->%i/%i" % (
                 diff_stat, item.value, self.stat, new_stat, self.max_stat))
+
+    def test_item_use_value(self):
+        for item in item_classes:
+            diff = item.use(100, 1500) - 100
+            if diff < 0:
+                diff = -diff
+            self.assertEqual(diff, item.value)
+
+    def test_item_use_max(self):
+        for item in item_classes:
+            self.assertEqual(item.use(1,2), 2)

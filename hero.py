@@ -89,10 +89,12 @@ class Hero(Fighter):
                 self.stats[item.stat] = item.use(self.stats[item.stat], self.max_stats[item.stat])
                 self.items[item_name] -= 1
                 print "%s used !" % item_name
+                return True
             else:
                 print "Can't use that : %s full" % item.stat
         else:
             print "Don't have any of that (%s)" % item_name
+        return False
 
     ### SKILL FUNCS #
     def know_skill(self, skill_name):
@@ -120,8 +122,8 @@ class Hero(Fighter):
                 print "Skill missed !"
 
     ### FIGHT FUNCS #TODO : tests
-    def attack(self, enemy):
-        enemy.hp -= self.atk
+    # def attack(self, enemy):
+    #     enemy.stats['HP'] -= self.stats['ATK']
 
     def kill(self, enemy):
         gain = enemy.reward()

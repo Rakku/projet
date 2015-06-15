@@ -28,8 +28,8 @@ class Fighter(Named):
         self.skills = skills
 
     def attack(self, foe):
-        foe.hp -= self.atk
-        print "%s deals %i dmg !" % (self.class_name(), self.atk)
+        foe.stats['HP'] -= self.stats['ATK']
+        print "%s deals %i dmg !" % (self.class_name(), self.stats['ATK'])
 
     def print_hp(self):
         print "%s\nHP : %i / %i" % (self.class_name(), self.hp, self.stats['HP'])
@@ -38,7 +38,7 @@ class Fighter(Named):
         return self.stats[stat] == self.max_stats[stat]
 
     def is_full_hp(self):
-        return self.stats['HP'] == self.max_stats['HP']
+        return self.full_stat('HP')
 
     def missing_hp(self):
-        return self.stats['HP'] - self.hp
+        return self.max_stats['HP'] - self.stats['HP']

@@ -40,6 +40,11 @@ class Cri(Skill):
     stat = 'HP'
 
     @staticmethod
+    def cast(stat):
+        new_stat = effects.loose_stat(stat, Tourment.value)
+        return new_stat
+
+    @staticmethod
     def castskill(target=None, val=value, t=stat):
         if effects.deal_dmg(target, dmg=val):
             print t

@@ -22,6 +22,7 @@ class TestHero(TestCase):
         self.assertDictEqual(base_skills[self.hero.spec], self.hero.skills)
         print "Skills Dict OK"
 
+    # TODO : separate ?
     def test_know_has_item(self):
         for item_name in self.hero.items:
             self.assertTrue(self.hero.know_item(item_name))
@@ -29,6 +30,7 @@ class TestHero(TestCase):
             self.assertEqual(self.hero.has_item(item_name), self.hero.items[item_name] > 0)
             print "%s has item %s" % (self.hero.name, item_name)
 
+    # TODO : more simple ?
     def test_add_item(self):
         for item_name in self.hero.items:
             print "TEST Hero.add_item(%s)" % item_name
@@ -47,9 +49,9 @@ class TestHero(TestCase):
         for item_name in self.hero.items:
             print "TEST Hero.use_item(%s)" % item_name
             qtity = self.hero.items[item_name]
-            self.hero.use_item(item_name)
-            print "qtity : %i -> %i" % (qtity, self.hero.items[item_name])
-            self.assertTrue(self.hero.items[item_name] == qtity - 1 or qtity == 0)
+            if self.hero.use_item(item_name):
+                print "qtity : %i -> %i" % (qtity, self.hero.items[item_name])
+                self.assertTrue(self.hero.items[item_name] == qtity - 1 or qtity == 0)
 
     def test_know_skill(self):
         for skill_name in self.hero.skills:
