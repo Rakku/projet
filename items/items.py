@@ -42,7 +42,6 @@ class Potion(Item):
     def useitem(target=None, v=value, t=stat):
         #return hp + 5
         # print t
-        # TODO : below
         # if target:
         #   target.gain_hp(value)
         if effects.gain_hp(target, value=v):

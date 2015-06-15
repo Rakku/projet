@@ -15,8 +15,10 @@ class Fighter(Named):
             self.res = stats['RES']
             self.mr = stats['MR']
             self.exp = stats['EXP']
-            self.stats = stats
             self.max_stats = stats
+            self.stats = {}
+            for stat in self.max_stats:
+                self.stats[stat] = self.max_stats[stat]
 
         # ITEMS : {
         if items is None:
@@ -30,9 +32,13 @@ class Fighter(Named):
     def attack(self, foe):
         foe.stats['HP'] -= self.stats['ATK']
         print "%s deals %i dmg !" % (self.class_name(), self.stats['ATK'])
+        print "%i / %i" % (foe.stats['HP'], foe.max_stats['HP'])
+
+    def print_stat(self, stat):
+        print "%s\n%s : %i / %i" % (self.class_name(), stat, self.stats[stat], self.max_stats[stat])
 
     def print_hp(self):
-        print "%s\nHP : %i / %i" % (self.class_name(), self.hp, self.stats['HP'])
+        self.print_stat('HP')
 
     def full_stat(self, stat):
         return self.stats[stat] == self.max_stats[stat]

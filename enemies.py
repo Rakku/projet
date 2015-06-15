@@ -15,18 +15,6 @@ class Enemy(Fighter):
         Fighter.__init__(self, stats, loot, skills)
 
 
-
-    # @staticmethod
-    # def load_enemy_skills(skills):
-    #     new_skills = []
-    #     for skil in skills:
-    #         # __import__()
-    #         pass  # TODO: Remove (the pass is here to avoid a Syntax error :))
-    #         # clazz = my_import('skills.' + item) # TODO: Code a method to import a class dynamically
-    #         # obj = clazz()
-    #         # new_items.append(obj)
-    #     return new_skills
-
     ### ???
     ### OVERRIDE METHODS :
     ### TO REDEFINE IN ENEMY CLASSES
@@ -42,10 +30,10 @@ class Enemy(Fighter):
 
     def fight_turn(self, foe):
         # choose_turn return fonction action
-        action = self.choose_turn()
-        if action == self.attack:
-            action(foe)
-        print foe.hp
+        # action = self.choose_turn()
+        # if action == self.attack:
+        #    action(foe)
+        self.attack(foe)
 
     ###
     ### GENERIC METHODS :
@@ -81,8 +69,7 @@ class Soul(Enemy):
         'MR': 5,
         'EXP': 10
     }
-    items = ["Potion", "Sirop"] # TODO: Use strings instead of useless dependencies
-    # items = [Potion, Sirop]
+    items = ["Potion", "Sirop"]
     skills = ["Tourment"]
 
     # For instances & function (Instances useless ? => go static functions ?)

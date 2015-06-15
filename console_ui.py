@@ -1,6 +1,7 @@
 #!/bin/python
 
-# TODO : IF REQUIRED
+#
+
 #######################
 ###   CONSOLE PRINTING
 ###   LIB OF STANDALONE FUNCS
@@ -67,12 +68,12 @@ def print_travel():
 def print_hero_stats():
     hero = Glob.hero
     print " --> Stats :"
-    print "HP : %i / %i" % (hero.hp, hero.stats['HP'])
-    print "ATK : %i" % hero.atk
-    print "PWR : %i" % hero.pwr
-    print "RES : %i" % hero.res
-    print "MR : %i" % hero.mr
-    print "EXP : %i" % hero.exp
+    print "HP : %i / %i" % (hero.stats['HP'], hero.max_stats['HP'])
+    print "ATK : %i" % hero.stats['ATK']
+    print "PWR : %i" % hero.stats['PWR']
+    print "RES : %i" % hero.stats['RES']
+    print "MR : %i" % hero.stats['MR']
+    print "EXP : %i" % hero.stats['EXP']
 
 ### ITEMS
 '''

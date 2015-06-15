@@ -2,7 +2,7 @@
 from console_ui import print_fight_choices, print_enemy_killed
 
 from fighter import *
-from items.items import Potion
+from items.items import item_classes
 from skills import Tourment
 from load import my_import
 
@@ -54,7 +54,6 @@ base_skills = {
 
 class Hero(Fighter):
     def __init__(self, name='Heroik', spec='Mage', items=None, skills=None):
-        # TODO : check init structs above
         Fighter.__init__(self, hero_base_stats[spec], base_items[spec], base_skills[spec])
 
         self.name = name
@@ -70,17 +69,18 @@ class Hero(Fighter):
 
     ### ITEM FUNCS
     def know_item(self, item_name):
-        return item_name in self.items#.keys()
+        return item_name in self.items
 
     def has_item(self, name):
         # name = name.class_name()
         return self.know_item(name) and self.items[name] > 0
 
     def add_item(self, item_name, qtity=1):
-        if self.has_item(item_name):
-            self.items[item_name] += qtity
-        else:
-            self.items[item_name] = qtity
+        if my_import('items.items', item_name):
+            if self.has_item(item_name):
+                self.items[item_name] += qtity
+            else:
+                self.items[item_name] = qtity
 
     def use_item(self, item_name):
         item = my_import('items.items', item_name)

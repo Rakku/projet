@@ -30,6 +30,27 @@ class TestHero(TestCase):
             self.assertEqual(self.hero.has_item(item_name), self.hero.items[item_name] > 0)
             print "%s has item %s" % (self.hero.name, item_name)
 
+    def test_know_item_yes(self):
+        self.hero.items["Potion"] = 0
+        self.assertTrue(self.hero.know_item("Potion"))
+        self.hero.items["Sirop"] = 5
+        self.assertTrue(self.hero.know_item("Sirop"))
+
+    def test_know_item_no(self):
+        self.hero.items["Sirop"] = 2
+        self.hero.items.pop("Sirop")
+        self.assertFalse(self.hero.know_item("Sirop"))
+
+    def test_has_item_yes(self):
+        self.hero.items["Potion"] = random.randint(1, 12)
+        self.assertTrue(self.hero.has_item("Potion"))
+
+    def test_has_item_no(self):
+        self.hero.items["Potion"] = 0
+        self.assertFalse(self.hero.has_item("Potion"))
+        self.hero.items.pop("Potion")
+        self.assertFalse(self.hero.has_item("Potion"))
+
     # TODO : more simple ?
     def test_add_item(self):
         for item_name in self.hero.items:
@@ -45,6 +66,33 @@ class TestHero(TestCase):
             self.assertEqual(qtity + n, self.hero.items[item_name])
             print "Add n = %i OK" % n
 
+    '''
+    # TESTED in add_item_qtity_default
+    def test_add_item_existing(self):
+        self.hero.add_item("Potion")
+        self.assertTrue(self.hero.items["Potion"] > 0)
+    '''
+
+    # Most Excluding Case First
+    def test_add_item_notexisting(self):
+        self.hero.add_item("Hibou")
+        self.assertFalse("Hibou" in self.hero.items.keys())
+
+    def test_add_item_notknown(self):
+        self.hero.add_item("ResBoost")
+        self.assertTrue("ResBoost" in self.hero.items.keys())
+
+    def test_add_item_qtity_default(self):
+        qtity = self.hero.items["Potion"]
+        self.hero.add_item("Potion")
+        self.assertEqual(qtity + 1, self.hero.items["Potion"])
+
+    def test_add_item_qtity_ok(self):
+        n = random.randint(0,5)
+        qtity = self.hero.items["Potion"]
+        self.hero.add_item("Potion", n)
+        self.assertEqual(qtity + n, self.hero.items["Potion"])
+
     def test_use_item(self):
         for item_name in self.hero.items:
             print "TEST Hero.use_item(%s)" % item_name
@@ -53,6 +101,16 @@ class TestHero(TestCase):
                 print "qtity : %i -> %i" % (qtity, self.hero.items[item_name])
                 self.assertTrue(self.hero.items[item_name] == qtity - 1 or qtity == 0)
 
+    def test_use_item_notowned(self):
+        pass
+
+    def test_use_item_owned(self):
+        self.hero.items["Potion"] = 4
+        # qtity = self.hero.items["Potion"]
+        self.hero.use_item("Potion")
+        self.assertEqual(3, self.hero.items["Potion"])
+
+    # Skill test suite : Most Exclusive Case first
     def test_know_skill(self):
         for skill_name in self.hero.skills:
             print "TEST Hero.know_skill(%s)" % skill_name

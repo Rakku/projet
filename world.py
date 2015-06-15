@@ -41,8 +41,8 @@ class Node:
         self.child_list.append(child)
         child.parent = self
 
-    # def is_leaf(self): # FIXME
-    # return not self.child
+    def is_leaf(self):
+        return not self.child_list
 
     def is_root(self):
         return self.parent is None
