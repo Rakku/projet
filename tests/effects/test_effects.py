@@ -19,21 +19,26 @@ class TestEffects(TestCase):
         print "gain_stat(%i,%i,%i) return %i" % (self.stat, self.value, self.max_stat, new_stat)
 
         self.assertTrue(new_stat <= self.max_stat, msg="Max stat overflow")
-        # Cases:
-        # Stat = 0                   return 0
-        # Stat + value > max_stat    return max_stat
-        # else                       return Stat + value
         self.assertTrue(new_stat == 0 or new_stat == self.max_stat or diff_stat == self.value, msg="Wrong stat gain ")
 
     # Divided test_gain_stat :
+    def test_gain_stat_zero(self):
+        stat = 0
+        val = random.randint(0, 100)
+        max = random.randint(0, 100)
+        self.assertEqual(effects.gain_stat(stat, val, max), 0)
+
     def test_gain_stat_value(self):
-        self.assertEqual(effects.gain_stat(2, 5, 8), 7)
+        stat = random.randint(1, 100)
+        val = random.randint(0, 100)
+        max = random.randint(0, 100) + stat + val   # max >= stat + val
+        self.assertEqual(effects.gain_stat(stat, val, max), stat + val)
 
     def test_gain_stat_max(self):
-        self.assertEqual(effects.gain_stat(6, 5, 9), 9)
-
-    def test_gain_stat_zero(self):
-        self.assertEqual(effects.gain_stat(0, 6, 9), 0)
+        stat = random.randint(90, 100)
+        val = random.randint(11, 100)
+        max = random.randint(0, 100)
+        self.assertEqual(effects.gain_stat(stat, val, max), max)
 
     def test_loose_stat(self):
         print "TEST LOOSE_STAT"
@@ -45,8 +50,12 @@ class TestEffects(TestCase):
         self.assertTrue(diff_stat == self.value or new_stat == 0, msg="Wrong stat loss")
 
     # Divided test_loose_stat:
-    def test_loose_stat_value(self):
-        self.assertEqual(effects.loose_stat(8, 5), 3)
+    def test_loose_stat_max(self):
+        stat = random.randint(0, 100)
+        val = random.randint(1, 100) + stat     # stat - val < 0
+        self.assertEqual(effects.loose_stat(stat, val), 0)
 
     def test_loose_stat_value(self):
-        self.assertEqual(effects.loose_stat(4, 6), 0)
+        stat = random.randint(1, 100)
+        val = random.randint(0, 100)
+        self.assertEqual(effects.loose_stat(stat, val), stat - val)

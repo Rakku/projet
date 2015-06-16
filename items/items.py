@@ -27,45 +27,61 @@ class Item(Named):
 ###   ITEM CLASSES  ###
 #######################
 
+
 class Potion(Item):
-    value = 5
+    default = 5
     stat = 'HP'
 
+    def __init__(self, value=default):
+        self.value = value
+        Item.__init__(self)
 
-    @staticmethod
-    def use(stat, max_stat):
+
+    def use(self, stat, max_stat):
         # return new_stat[stat]
-        new_hp = effects.gain_stat(stat, Potion.value, max_stat)
+        new_hp = effects.gain_stat(stat, self.value, max_stat)
         return new_hp
 
-    @staticmethod
-    def useitem(target=None, v=value, t=stat):
-        #return hp + 5
-        # print t
-        # if target:
-        #   target.gain_hp(value)
-        if effects.gain_hp(target, value=v):
-            return True
-        return False
+    # @staticmethod
+    # def useitem(target=None, v=value, t=stat):
+    #     #return hp + 5
+    #     # print t
+    #     # if target:
+    #     #   target.gain_hp(value)
+    #     if effects.gain_hp(target, value=v):
+    #         return True
+    #     return False
 
 
+# TODO : Obsolete : <=> Potion(3)
 class Sirop(Item):
-    value = 3
+    default = 3
     stat = 'HP'
 
-    @staticmethod
-    def use(stat, max_stat):
-        return effects.gain_stat(stat, Sirop.value, max_stat)
+    def __init__(self, value=default):
+        self.value = value
+        Item.__init__(self)
 
-    @staticmethod
-    def useitem(target=None, v=value, t=stat):
-        if effects.gain_hp(target, value=v):
-            print t
-            return True
-        return False
+    def use(self, stat, max_stat):
+        return effects.gain_stat(stat, self.value, max_stat)
 
+    # @staticmethod
+    # def useitem(target=None, v=self.value, t=stat):
+    #     if effects.gain_hp(target, value=v):
+    #         print t
+    #         return True
+    #     return False
 
 '''
+class Armor(Item):
+    default = 8
+    stat = 'RES'
+
+    def __init__(self, value=default):
+        self.value = value
+        Item.__init__(self)
+
+)
 class Sirop:
     text = '+3 HP'
 
@@ -100,15 +116,21 @@ class Sirop:
 
 def fill_item_classes():
     list = []
+    usables = []
+    equips = []
     # name = Soul, obj = enemies.Soul
     for name, obj in inspect.getmembers(sys.modules[__name__], inspect.isclass):
         print name, obj
         if obj.__module__ == __name__ and name != 'Item':
             list.append(obj())
-    return list
+            if callable(getattr(obj, "use", None)):
+                usables.append(obj())
+            elif callable(getattr(obj, "equip", None)):
+                equips.append(obj())
+    return list, usables, equips
 
 
-item_classes = fill_item_classes()
+item_classes, usables, equips = fill_item_classes()
 
 #
 # item_table = {

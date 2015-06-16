@@ -27,13 +27,20 @@ class TestItem(TestCase):
                                                                                        "stat = %i->%i/%i" % (
                 diff_stat, item.value, self.stat, new_stat, self.max_stat))
 
+    def test_item_use_zero(self):
+        for item in usables:
+            stat = 0
+            max = random.randint(0, 100) + stat
+            self.assertEqual(item.use(stat, max), 0)
+
     def test_item_use_value(self):
-        for item in item_classes:
-            diff = item.use(100, 1500) - 100
-            if diff < 0:
-                diff = -diff
-            self.assertEqual(diff, item.value)
+        for item in usables:
+            stat = random.randint(1, 100)
+            max = random.randint(0, 100) + stat + item.value # max > stat + value
+            self.assertEqual(item.use(stat, max), stat + item.value)
 
     def test_item_use_max(self):
-        for item in item_classes:
-            self.assertEqual(item.use(1,2), 2)
+        for item in usables:
+            stat = random.randint(1, 100)
+            max = random.randint(0, stat + item.value) # max > stat + value
+            self.assertEqual(item.use(stat, max), max)
