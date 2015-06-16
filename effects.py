@@ -9,6 +9,9 @@ def gain_stat(stat, value, max_stat):
     new_stat = stat + value
     return min(stat + value, max_stat)
 
+def gain_multi_stats(stats, values, max_stats):
+    res =[]
+    pass
 
 def loose_stat(stat, value):
     return max(stat - value, 0)

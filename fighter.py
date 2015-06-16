@@ -29,6 +29,8 @@ class Fighter(Named):
             skills = {}
         self.skills = skills
 
+        self.status = None
+
     def attack(self, foe):
         foe.stats['HP'] -= self.stats['ATK']
         print "%s deals %i dmg !" % (self.class_name(), self.stats['ATK'])

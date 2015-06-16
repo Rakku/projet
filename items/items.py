@@ -20,7 +20,15 @@ class Item(Named):
             text = "+ %i %s" % (self.value, self.stat)
         self.text = text
 
-        #def use(self):
+
+class ItemAlt(Named):
+    def __init__(self, cost=50, text=''):
+        self.cost = cost
+        if text == '':
+            for stat in self.bonus_stats:
+                if self.bonus_stats[stat] != 0:
+                    text = "+ %i %s\n" % (self.bonus_stats[stat], stat)
+        self.text = text
 
 
 #######################
@@ -36,50 +44,67 @@ class Potion(Item):
         self.value = value
         Item.__init__(self)
 
-
+    # add value to stat with total < max_stat
     def use(self, stat, max_stat):
-        # return new_stat[stat]
         new_hp = effects.gain_stat(stat, self.value, max_stat)
+        # TODO : return stats ?
         return new_hp
 
-    # @staticmethod
-    # def useitem(target=None, v=value, t=stat):
-    #     #return hp + 5
-    #     # print t
-    #     # if target:
-    #     #   target.gain_hp(value)
-    #     if effects.gain_hp(target, value=v):
-    #         return True
-    #     return False
+class Elixir(Potion):
+    def __init__(self):
+        Potion.__init__(self, 50)
 
 
-# TODO : Obsolete : <=> Potion(3)
-class Sirop(Item):
-    default = 3
-    stat = 'HP'
+class Stone(Item):
+    default = 1
 
-    def __init__(self, value=default):
+    def __init__(self, stat='', value=default):
         self.value = value
+        if stat == '':
+            stat = 'HP'
+        self.stat = stat
         Item.__init__(self)
 
-    def use(self, stat, max_stat):
-        return effects.gain_stat(stat, self.value, max_stat)
+    # add value to stat
+    def use(self, stat):
+        return stat + self.value
 
-    # @staticmethod
-    # def useitem(target=None, v=self.value, t=stat):
-    #     if effects.gain_hp(target, value=v):
-    #         print t
-    #         return True
-    #     return False
+
+# Equipment
+class Stuff(ItemAlt):
+    bonus_stats = {
+        'HP': 0,
+        'ATK': 0,
+        'PWR': 0,
+        'RES': 10,
+        'MR': 5,
+        'EXP': 0
+    }
+
+    def __init__(self, stats=bonus_stats):
+        self.bonus_stats = stats
+        self.equipped = False
+        ItemAlt.__init__(self)
+
+    def equip(self, stats):
+        res = {}
+        if self.equipped:
+            # Unequip
+            for stat in stats:
+                #res[stat] = stats[stat] - self.bonus_stats[stat]
+                stats[stat] -= self.bonus_stats[stat]
+            self.equipped = True
+        else:
+            # Equip
+            for stat in stats:
+                #res[stat] = stats[stat] + self.bonus_stats[stat]
+                stats[stat] += self.bonus_stats[stat]
+            self.equipped = True
+        #return res
+
 
 '''
-class Armor(Item):
-    default = 8
-    stat = 'RES'
 
-    def __init__(self, value=default):
-        self.value = value
-        Item.__init__(self)
 
 )
 class Sirop:
@@ -130,7 +155,7 @@ def fill_item_classes():
     return list, usables, equips
 
 
-item_classes, usables, equips = fill_item_classes()
+#item_classes, usables, equips = fill_item_classes()
 
 #
 # item_table = {

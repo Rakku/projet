@@ -2,8 +2,8 @@
 from console_ui import print_fight_choices, print_enemy_killed
 
 from fighter import *
-from items.items import item_classes
-from skills import Tourment
+#from items.items import item_classes
+#from skills import Tourment
 from load import my_import
 
 

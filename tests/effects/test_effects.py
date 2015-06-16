@@ -56,6 +56,6 @@ class TestEffects(TestCase):
         self.assertEqual(effects.loose_stat(stat, val), 0)
 
     def test_loose_stat_value(self):
-        stat = random.randint(1, 100)
-        val = random.randint(0, 100)
+        stat = random.randint(50, 100)
+        val = random.randint(0, 50)
         self.assertEqual(effects.loose_stat(stat, val), stat - val)
