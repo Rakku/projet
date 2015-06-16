@@ -9,6 +9,7 @@ class TestHero(TestCase):
     def setUp(self):
         self.hero = Hero()
 
+    # Typically : Check every stat key ? (like item/skill)
     def test_hero_init(self):
         print "TEST HERO CREATION"
         print "Name : %s" % self.hero.name
@@ -22,7 +23,10 @@ class TestHero(TestCase):
         self.assertDictEqual(base_skills[self.hero.spec], self.hero.skills)
         print "Skills Dict OK"
 
-    # TODO : separate ?
+    # TODO : Useless ?
+    # Typically : Inter-dependent double check :
+    # 1/ hero.items tested with know_item, has_item (=> test_init_items) DONE above
+    # 2/ know_item, has_item tested by admitting hero.items is OK (=> test_know_has_item) DONE below
     def test_know_has_item(self):
         for item_name in self.hero.items:
             self.assertTrue(self.hero.know_item(item_name))
@@ -30,26 +34,23 @@ class TestHero(TestCase):
             self.assertEqual(self.hero.has_item(item_name), self.hero.items[item_name] > 0)
             print "%s has item %s" % (self.hero.name, item_name)
 
-    def test_know_item_yes(self):
+    def test_know_item(self):
         self.hero.items["Potion"] = 0
         self.assertTrue(self.hero.know_item("Potion"))
         self.hero.items["Sirop"] = 5
         self.assertTrue(self.hero.know_item("Sirop"))
-
-    def test_know_item_no(self):
-        self.hero.items["Sirop"] = 2
         self.hero.items.pop("Sirop")
         self.assertFalse(self.hero.know_item("Sirop"))
+        self.assertFalse(self.hero.know_item("Hibou"))
 
-    def test_has_item_yes(self):
-        self.hero.items["Potion"] = random.randint(1, 12)
+    def test_has_item(self):
+        self.hero.items["Potion"] = 2   # random.randint(1, 12)
         self.assertTrue(self.hero.has_item("Potion"))
-
-    def test_has_item_no(self):
         self.hero.items["Potion"] = 0
         self.assertFalse(self.hero.has_item("Potion"))
         self.hero.items.pop("Potion")
         self.assertFalse(self.hero.has_item("Potion"))
+
 
     # TODO : more simple ?
     def test_add_item(self):

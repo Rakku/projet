@@ -48,7 +48,7 @@ class TestItem(TestCase):
     def test_potion_use_value(self):
         value = random.randint(0, 100)
         item = Potion(value)
-        # TODO : is it better to test Potion(random) or Elixir() & Sirop() & ... ?
+        # TODO : Typically is it better to test Potion(random) or Elixir() & Sirop() & ... ?
         #item = Elixir()
         #value = item.value
         stat = random.randint(1, 100)
@@ -72,10 +72,10 @@ class TestItem(TestCase):
     # STUFF
     def test_stuff_equip(self):
         item = Stuff()
-        stats = self.stats.copy()
+        old = self.stats.copy()
         item.equip(self.stats)
         for stat in self.stats:
-            self.assertEqual(stats[stat] + item.bonus_stats[stat], self.stats[stat])
+            self.assertEqual(old[stat] + item.bonus_stats[stat], self.stats[stat])
         self.assertTrue(item.equipped)
 
     # TODO Case : set equipped = True, assertEqual(self.stats - item.stats, new_stats)

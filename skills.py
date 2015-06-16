@@ -1,6 +1,7 @@
 #!/bin/python
 
-import effects
+
+#import effects
 from named import Named
 
 # TODO : various checks (global table)
@@ -11,59 +12,47 @@ from named import Named
 #######################
 
 class Skill(Named):
-    def __init__(self, text=''):
+    stat_effects = {
+        'HP': -5,
+        'ATK': -1
+        # 'PWR': 0,
+        # 'RES': 0,
+        # 'MR': 0,
+        # 'EXP': 0
+    }
+
+    def __init__(self, stats=stat_effects, text=''):
+        self.effects = stats
         if text == '':
-            text = '- %i %s' % (self.value, self.stat)
+            for stat in self.effects:
+                if self.effects[stat] != 0:
+                    text = '- %i %s\n' % (self.effects[stat], stat)
         self.text = text
+
+    def cast(self, stats):
+        for stat in self.effects:
+            stats[stat] += self.effects[stat]
 
 #######################
 ###  SKILL CLASSES  ###
 #######################
+
+
 class Tourment(Skill):
-    value = 5
-    stat = 'HP'
+    stat_effects = {'HP': -5}
 
-    @staticmethod
-    def cast(stat):
-        new_stat = effects.loose_stat(stat, Tourment.value)
-        return new_stat
+    def __init__(self, effects=stat_effects):
+        Skill.__init__(self, effects)
 
-    @staticmethod
-    def castskill(target=None, val=value, t=stat):
-        if effects.deal_dmg(target, dmg=val):
-            print t
-            return True
-        return False
 
 class Cri(Skill):
-    value = 3
-    stat = 'HP'
+    stat_effects = {'RES': -1}
 
-    @staticmethod
-    def cast(stat):
-        new_stat = effects.loose_stat(stat, Tourment.value)
-        return new_stat
-
-    @staticmethod
-    def castskill(target=None, val=value, t=stat):
-        if effects.deal_dmg(target, dmg=val):
-            print t
-            return True
-        return False
+    def __init__(self, effects=stat_effects):
+        Skill.__init__(self, effects)
 ###########################
 ###  SKILL=>NAME TABLES ###
 ###########################
-# skill_table = {
-#     Tourment: 1
-# }
-# 'Cri': 1,
-# 'Morsure': 5,
-#     'Charge': 5,
-#     'Fireball': 10,
-#     'Iceball': 10,
-#     'Energy Shot': 15
-#
-# }
 #
 #
 # class Skill:
