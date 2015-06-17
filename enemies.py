@@ -6,19 +6,14 @@ from random import *
 
 from load import load_items, load_skills
 from fighter import *
+from load import my_import
 
 
 # TODO : Tests (see Hero)
 class Enemy(Fighter):
-    # def __init__(self, name, hp, atk, pwr, pr, mr, exp =None, loot =None, skills =None):
     def __init__(self, stats=None, loot=None, skills=None):
         Fighter.__init__(self, stats, loot, skills)
 
-
-    ### ???
-    ### OVERRIDE METHODS :
-    ### TO REDEFINE IN ENEMY CLASSES
-    ### ???
     def choose_turn(self):
         # action = random()
         action = 0.1
@@ -35,20 +30,14 @@ class Enemy(Fighter):
         #    action(foe)
         self.attack(foe)
 
-    ###
-    ### GENERIC METHODS :
-    ### COMMON FOR ALL ENEMIES
-    ###
-
     ### ITEM FUNCS
     def use_item(self):
         item = choice(self.items)
         item.use(self)
 
     def reward(self):
-        if self.items:
-            return choice(self.items)  # Item object
-        return None
+        gain = my_import('items.items', choice(self.items.keys()))  # Item object
+        return gain
 
     ### SKILL FUNCS
     def cast_skill(self):
@@ -69,13 +58,13 @@ class Soul(Enemy):
         'MR': 5,
         'EXP': 10
     }
-    items = ["Potion", "Sirop"]
-    skills = ["Tourment"]
+    items = {"Potion": 1, "Sirop": 5}
+    skills = {"Tourment": 1}
 
     # For instances & function (Instances useless ? => go static functions ?)
     def __init__(self, stats=stats, items=items, skills=skills):
-        items = load_items(items) # TODO
-        skills = load_skills(skills) # TODO
+        #items = load_items(items) # TODO
+        #skills = load_skills(skills) # TODO
         Enemy.__init__(self, stats, items, skills)
 
 
@@ -88,13 +77,13 @@ class Specter(Enemy):
         'MR': 5,
         'EXP': 10
     }
-    items = ["Potion"]
-    skills = ["Tourment"]
+    items = {"Potion": 1}
+    skills = {"Tourment": 1}
 
     # For instances & function (Instances useless ? => go static functions ?)
     def __init__(self, stats=stats, items=items, skills=skills):
-        items = load_items(items) # TODO
-        skills = load_skills(skills) # TODO
+        #items = load_items(items) # TODO
+        #skills = load_skills(skills) # TODO
         Enemy.__init__(self, stats, items, skills)
 
 

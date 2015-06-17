@@ -72,13 +72,20 @@ class TestItem(TestCase):
     # STUFF
     def test_stuff_equip(self):
         item = Stuff()
+        # equip
         old = self.stats.copy()
         item.equip(self.stats)
         for stat in self.stats:
             self.assertEqual(old[stat] + item.bonus_stats[stat], self.stats[stat])
         self.assertTrue(item.equipped)
+        # unequip
+        old = self.stats.copy()
+        item.equip(self.stats)
+        for stat in self.stats:
+            self.assertEqual(old[stat] - item.bonus_stats[stat], self.stats[stat])
+        self.assertFalse(item.equipped)
 
-    # TODO Case : set equipped = True, assertEqual(self.stats - item.stats, new_stats)
+    # TODO Repeat above
     def test_stuff_unequip(self):
         item = Stuff()
         #item.equip(self.stats)
@@ -87,4 +94,4 @@ class TestItem(TestCase):
         item.equip(self.stats)
         for stat in self.stats:
             self.assertEqual(self.stats[stat], stats[stat] - item.bonus_stats[stat])
-        self.assertTrue(item.equipped)
+        self.assertFalse(item.equipped)

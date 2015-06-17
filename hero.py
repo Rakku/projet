@@ -86,7 +86,7 @@ class Hero(Fighter):
         item = my_import('items.items', item_name)
         if item and self.has_item(item_name):
             if not self.full_stat(item.stat):
-                self.stats[item.stat] = item.use(self.stats[item.stat], self.max_stats[item.stat])
+                self.stats[item.stat] = item().use(self.stats[item.stat], self.max_stats[item.stat])
                 self.items[item_name] -= 1
                 print "%s used !" % item_name
                 return True
@@ -107,25 +107,30 @@ class Hero(Fighter):
             if not self.know_skill(skill_name):
                 self.skills[skill_name] = 1
                 print "%s a appris un sort : %s %i" % (self.name, skill_name, self.skills[skill_name])
+                return True
             else:
                 print "%s connait deja %s %i" % (self.name, skill_name, self.skills[skill_name])
+        return False
 
     def cast_skill(self, skill_name):
         if self.know_skill(skill_name):
             skill = my_import('skills', skill_name)
-            stat = self.stats[skill.stat]
-            new_stat = skill.cast(stat)
+            stats = self.stats
+            new_stats = skill().cast(stats)
 
-            if new_stat != stat:
+            if new_stats != stats:
                 print "Skill reached target !"
             else:
                 print "Skill missed !"
+            return True
+        return False
 
     ### FIGHT FUNCS #TODO : tests
     # def attack(self, enemy):
     #     enemy.stats['HP'] -= self.stats['ATK']
 
     def kill(self, enemy):
+        print enemy.items
         gain = enemy.reward()
         self.exp += enemy.exp
         self.add_item(gain.class_name())
