@@ -32,8 +32,8 @@ class Enemy(Fighter):
 
     ### ITEM FUNCS
     def use_item(self):
-        item = choice(self.items)
-        item.use(self)
+        item = my_import('items.items', choice(self.items.keys()))
+        item.use(self.stats, self.max_stats)
 
     def reward(self):
         gain = my_import('items.items', choice(self.items.keys()))  # Item object

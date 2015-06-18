@@ -83,10 +83,14 @@ class Hero(Fighter):
                 self.items[item_name] = qtity
 
     def use_item(self, item_name):
+        used = True
         item = my_import('items.items', item_name)
         if item and self.has_item(item_name):
-            if not self.full_stat(item.stat):
-                self.stats[item.stat] = item().use(self.stats[item.stat], self.max_stats[item.stat])
+            for stat in item().bonus_stats:
+                if self.full_stat(stat):
+                    used = False
+            if used:
+                item().use(self.stats, self.max_stats)
                 self.items[item_name] -= 1
                 print "%s used !" % item_name
                 return True

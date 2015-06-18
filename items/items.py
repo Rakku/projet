@@ -36,19 +36,21 @@ class ItemAlt(Named):
 #######################
 
 
-class Potion(Item):
+class Potion(ItemAlt):
     default = 5
     stat = 'HP'
+    bonus_stats = {'HP': 5}
 
-    def __init__(self, value=default):
-        self.value = value
-        Item.__init__(self)
+    def __init__(self, stats=bonus_stats):
+        self.bonus_stats = stats
+        ItemAlt.__init__(self)
 
     # add value to stat with total < max_stat
-    def use(self, stat, max_stat):
-        new_hp = effects.gain_stat(stat, self.value, max_stat)
-        # TODO : return stats ?
-        return new_hp
+    #TODO : change return to Stat_dict { 'HP': X, ... } instead of int
+    def use(self, stats, max_stats):
+        effects.gain_stats(stats, self.bonus_stats, max_stats)
+
+        #return stats
 
 class Elixir(Potion):
     def __init__(self):

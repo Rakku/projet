@@ -10,13 +10,22 @@ class TestItem(TestCase):
     def setUp(self):
         # base stats before item use/equip/whatever
         self.stats = {
-            'HP': 0,
+            'HP': 20,
             'ATK': 0,
             'PWR': 0,
             'RES': 10,
             'MR': 5,
             'EXP': 0
         }
+        self.max_stats = {
+            'HP': 50,
+            'ATK': 0,
+            'PWR': 0,
+            'RES': 30,
+            'MR': 5,
+            'EXP': 0
+        }
+        self.item = Potion()
         self.stat = random.randint(0, 8)
         self.max_stat = random.randint(8, 15)
 
@@ -39,28 +48,38 @@ class TestItem(TestCase):
 
     # POTIONS
     def test_potion_use_zero(self):
-        value = random.randint(0, 100)
-        item = Potion(value)
-        stat = 0
-        max = random.randint(0, 100) + stat
-        self.assertEqual(item.use(stat, max), 0)
+        #value = random.randint(0, 100)
+        item = Potion({'HP': 0})
+        old = self.stats
+        max = random.randint(0, 100)
+        item.use(self.stats, self.max_stats)
+        self.assertEqual(old, self.stats)
 
     def test_potion_use_value(self):
-        value = random.randint(0, 100)
-        item = Potion(value)
+        #item = Potion(value)
         # TODO : Typically is it better to test Potion(random) or Elixir() & Sirop() & ... ?
         #item = Elixir()
         #value = item.value
-        stat = random.randint(1, 100)
-        max = random.randint(0, 100) + stat + item.value # max > stat + value
-        self.assertEqual(item.use(stat, max), stat + value)
+        old = self.stats.copy()
+ #       stat = random.randint(1, 100)
+#        max = random.randint(0, 100) + stat + item.value # max > stat + value
+        self.item.use(self.stats, self.max_stats)
+        #print self.stats
+        #print old
+        for stat in self.item.bonus_stats:
+            self.assertEqual(self.stats[stat], old[stat] + self.item.bonus_stats[stat])
 
+    '''
     def test_potion_use_max(self):
         value = random.randint(0, 100)
-        item = Potion(value)
+        #item = Potion(value)
         stat = random.randint(1, 100)
         max = random.randint(0, stat + value) # max <= stat + value
-        self.assertEqual(item.use(stat, max), max)
+        old = self.stats
+        self.item.use(self.stats, self.max_stats)
+        for stat in self.item.bonus_stats:
+            self.assertEqual(self.stats[stat], old[stat] + self.item.bonus_stats[stat])
+    '''
 
     # STONES
     def test_stone_use(self):
@@ -85,15 +104,3 @@ class TestItem(TestCase):
             self.assertEqual(old[stat] - item.bonus_stats[stat], self.stats[stat])
         self.assertFalse(item.equipped)
 
-    # TODO Repeat above
-    def test_stuff_unequip(self):
-        item = Stuff()
-        #item.equip(self.stats)
-        item.equip(self.stats)
-        print item.equipped
-        stats = self.stats.copy()
-        item.equip(self.stats)
-        print item.equipped
-        for stat in item.bonus_stats:
-            self.assertEqual(self.stats[stat], stats[stat] - item.bonus_stats[stat])
-        self.assertFalse(item.equipped)

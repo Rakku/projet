@@ -69,6 +69,7 @@ class TestHero(TestCase):
         # Use : True / has item, HP not full
         self.hero.stats['HP'] = 5
         self.assertTrue(self.hero.use_item("Potion"))
+        print self.hero.stats
         self.assertEqual(self.hero.stats['HP'], 10)
         self.assertEqual(self.hero.items["Potion"], 1)
         # Use : False / doesnt have item
@@ -166,7 +167,7 @@ class TestHero(TestCase):
         self.assertFalse('Potion' in self.hero.skills)
 
     def test_cast_skill(self):
-        # know skill
+        # known skill
         self.assertTrue(self.hero.cast_skill('Tourment'))
         # unknown skill
         self.assertFalse(self.hero.cast_skill('Cri'))

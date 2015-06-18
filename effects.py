@@ -2,21 +2,31 @@
 
 # TODO : complete progressively
 
-
+# TODO : change to void() func
 def gain_stat(stat, value, max_stat):
+    '''
+    if stat != 0:
+        stat = min(stat + value, max_stat)
+    '''
     if stat == 0:
         return 0
-    new_stat = stat + value
     return min(stat + value, max_stat)
 
-def gain_multi_stats(stats, values, max_stats):
-    res =[]
-    pass
+def gain_stats(stats, values, max_stats):
+    for stat in values:
+        stats[stat] = gain_stat(stats[stat], values[stat], max_stats[stat])
+ #   return stats
 
 def loose_stat(stat, value):
+    # stat = max(stat - value, 0)
     return max(stat - value, 0)
 
+def loose_stats(stats, values):
+    for stat in values:
+        loose_stat(stats[stat], values[stat])
 
+
+'''
 def gain_hp(target, value=0):
     if target is not None:
         if target.is_full_hp():
@@ -44,3 +54,4 @@ def deal_dmg(target, value=1):
         target.print_hp()
         return True
     return False
+'''
