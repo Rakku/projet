@@ -89,9 +89,11 @@ class TestItem(TestCase):
     def test_stuff_unequip(self):
         item = Stuff()
         #item.equip(self.stats)
-        item.equipped = True
+        item.equip(self.stats)
+        print item.equipped
         stats = self.stats.copy()
         item.equip(self.stats)
-        for stat in self.stats:
+        print item.equipped
+        for stat in item.bonus_stats:
             self.assertEqual(self.stats[stat], stats[stat] - item.bonus_stats[stat])
         self.assertFalse(item.equipped)

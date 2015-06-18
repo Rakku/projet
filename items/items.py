@@ -93,7 +93,7 @@ class Stuff(ItemAlt):
             for stat in stats:
                 #res[stat] = stats[stat] - self.bonus_stats[stat]
                 stats[stat] -= self.bonus_stats[stat]
-            self.equipped = True
+            self.equipped = False
         else:
             # Equip
             for stat in stats:
