@@ -60,6 +60,14 @@ class Hero(Fighter):
         self.spec = spec
         self.level = 1
 
+    # NEED OBJECTS for stuff
+        self.stuff = []
+        self.equipped = {
+            "Head": None,
+            "Body": None,
+            "Legs": None,
+            "Weapon": None
+        }
         self.pos = [0, 0]
 
     ### GENERICS
@@ -81,24 +89,27 @@ class Hero(Fighter):
                 self.items[item_name] += qtity
             else:
                 self.items[item_name] = qtity
+                print "new item !"
 
     def use_item(self, item_name):
         used = True
-        item = my_import('items.items', item_name)
-        if item and self.has_item(item_name):
+        if self.has_item(item_name):
+            item = my_import('items.items', item_name)
             for stat in item().bonus_stats:
                 if self.full_stat(stat):
                     used = False
+                    print "Can't use that : %s full" % stat
+                if self.stats[stat] == 0:
+                    used = False
+                    print "Can't use that : 0 %s" % stat
             if used:
                 item().use(self.stats, self.max_stats)
                 self.items[item_name] -= 1
                 print "%s used !" % item_name
-                return True
-            else:
-                print "Can't use that : %s full" % item.stat
         else:
+            used = False
             print "Don't have any of that (%s)" % item_name
-        return False
+        return used
 
     ### SKILL FUNCS #
     def know_skill(self, skill_name):
@@ -136,8 +147,10 @@ class Hero(Fighter):
     def kill(self, enemy):
         print enemy.items
         gain = enemy.reward()
-        self.exp += enemy.exp
-        self.add_item(gain.class_name())
+        print gain
+        self.stats['EXP'] += enemy.stats['EXP']
+        if gain:
+            self.add_item(gain)
         print_enemy_killed(enemy, gain)
 
     def fight_turn(self, enemy):

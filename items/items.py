@@ -35,44 +35,48 @@ class ItemAlt(Named):
 ###   ITEM CLASSES  ###
 #######################
 
-
+#
+# POTIONS : TEMP STATS MODIFS
+#
 class Potion(ItemAlt):
-    default = 5
-    stat = 'HP'
-    bonus_stats = {'HP': 5}
+    # default = 5
+    # stat = 'HP'
+    stats = {'HP': 5}
 
-    def __init__(self, stats=bonus_stats):
-        self.bonus_stats = stats
+    def __init__(self, bonus=stats):
+        self.bonus_stats = bonus
         ItemAlt.__init__(self)
 
-    # add value to stat with total < max_stat
-    #TODO : change return to Stat_dict { 'HP': X, ... } instead of int
-    def use(self, stats, max_stats):
-        effects.gain_stats(stats, self.bonus_stats, max_stats)
+    def use(self, stats):
+        for stat in self.bonus_stats:
+            stats[stat] += self.bonus_stats[stat]
+        # effects.gain_stats(stats, self.bonus_stats, max_stats)
 
-        #return stats
 
 class Elixir(Potion):
     def __init__(self):
-        Potion.__init__(self, 50)
+        Potion.__init__(self, {'HP': 50})
 
 
-class Stone(Item):
-    default = 1
+#
+# STONES : PERMA MAX STATS MODIFS
+#
+class Stone(ItemAlt):
+    stats = {'HP': 3}
 
-    def __init__(self, stat='', value=default):
-        self.value = value
-        if stat == '':
-            stat = 'HP'
-        self.stat = stat
-        Item.__init__(self)
+    def __init__(self, bonus=stats):
+        self.bonus_stats = bonus
+        ItemAlt.__init__(self)
 
     # add value to stat
-    def use(self, stat):
-        return stat + self.value
+    def use(self, max_stats):
+        for stat in self.bonus_stats:
+            max_stats[stat] += self.bonus_stats[stat]
 
 
-# Equipment
+#
+# STUFF : MAX STATS MODIFS WHILE EQUIPPED
+#
 class Stuff(ItemAlt):
     bonus_stats = {
         'HP': 0,
@@ -88,19 +92,18 @@ class Stuff(ItemAlt):
         self.equipped = False
         ItemAlt.__init__(self)
 
-    def equip(self, stats):
-        res = {}
+    def equip(self, max_stats):
         if self.equipped:
             # Unequip
-            for stat in stats:
+            for stat in max_stats:
                 #res[stat] = stats[stat] - self.bonus_stats[stat]
-                stats[stat] -= self.bonus_stats[stat]
+                max_stats[stat] -= self.bonus_stats[stat]
             self.equipped = False
         else:
             # Equip
-            for stat in stats:
+            for stat in max_stats:
                 #res[stat] = stats[stat] + self.bonus_stats[stat]
-                stats[stat] += self.bonus_stats[stat]
+                max_stats[stat] += self.bonus_stats[stat]
             self.equipped = True
         #return res
 

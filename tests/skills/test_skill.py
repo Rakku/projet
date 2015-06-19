@@ -24,5 +24,5 @@ class TestSkill(TestCase):
     def test_skill_cast(self):
         old = self.stats.copy()
         self.skill.cast(self.stats)
-        for stat in self.skill.stat_effects:
-            self.assertEqual(self.stats[stat], old[stat] + self.skill.stat_effects[stat])
+        for stat, value in self.skill.stat_effects.iteritems():
+            self.assertEqual(self.stats[stat], old[stat] + value)

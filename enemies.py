@@ -36,7 +36,7 @@ class Enemy(Fighter):
         item.use(self.stats, self.max_stats)
 
     def reward(self):
-        gain = my_import('items.items', choice(self.items.keys()))  # Item object
+        gain = choice(self.items.keys())  # Item object
         return gain
 
     ### SKILL FUNCS

@@ -151,4 +151,4 @@ def print_enemy_killed(enemy, gain):
     print "You have killed %s !" % enemy.class_name()
     print "You gain %i EXP" % enemy.exp
     if gain:
-        print "You have looted %s !" % gain.class_name()
+        print "You have looted %s !" % gain

@@ -9,11 +9,9 @@ class TestHero(TestCase):
     def setUp(self):
         self.hero = Hero()
 
-    # Typically : Check every stat key ? (like item/skill)
     def test_hero_init(self):
         print "TEST HERO CREATION"
-        print "Name : %s" % self.hero.name
-        # print "Spec OK"
+        print "Name : %s, %s" % (self.hero.name, self.hero.spec)
         self.assertEquals(self.hero.level, 1)
         print "Level OK"
         self.assertDictEqual(hero_base_stats[self.hero.spec], self.hero.stats)
@@ -35,28 +33,38 @@ class TestHero(TestCase):
             print "%s has item %s" % (self.hero.name, item_name)
 
     def test_know_item(self):
+        # Knows
         self.hero.items["Potion"] = 0
         self.assertTrue(self.hero.know_item("Potion"))
+        # Has (include Knows aka above useless)
         self.hero.items["Sirop"] = 5
         self.assertTrue(self.hero.know_item("Sirop"))
+        # not Knows
         self.hero.items.pop("Sirop")
         self.assertFalse(self.hero.know_item("Sirop"))
+        # not existing
         self.assertFalse(self.hero.know_item("Hibou"))
 
     def test_has_item(self):
+        # Has
         self.hero.items["Potion"] = 2   # random.randint(1, 12)
         self.assertTrue(self.hero.has_item("Potion"))
+        # Knows
         self.hero.items["Potion"] = 0
         self.assertFalse(self.hero.has_item("Potion"))
+        # not Knows
         self.hero.items.pop("Potion")
         self.assertFalse(self.hero.has_item("Potion"))
 
     def test_add_item(self):
         self.hero.items["Potion"] = 0
+        # Default qtity = 1
         self.hero.add_item("Potion")
         self.assertEqual(self.hero.items["Potion"], 1)
+        # Set qtity
         self.hero.add_item("Potion", 4)
         self.assertEqual(self.hero.items["Potion"], 5)
+        # Item not existing
         self.hero.add_item("Hibou", 4)
         self.assertFalse("Hibou" in self.hero.items.keys())
 
@@ -64,28 +72,32 @@ class TestHero(TestCase):
         self.hero.items["Potion"] = 2
         # Use : False / has item, HP full (hero init test OK)
         self.assertFalse(self.hero.use_item("Potion"))
-        self.assertEqual(self.hero.stats['HP'], self.hero.max_stats['HP'])
         self.assertEqual(self.hero.items["Potion"], 2)
+        # self.assertEqual(self.hero.stats['HP'], self.hero.max_stats['HP'])    # checked in items
         # Use : True / has item, HP not full
         self.hero.stats['HP'] = 5
         self.assertTrue(self.hero.use_item("Potion"))
-        print self.hero.stats
-        self.assertEqual(self.hero.stats['HP'], 10)
         self.assertEqual(self.hero.items["Potion"], 1)
+        # self.assertEqual(self.hero.stats['HP'], 10)     # checked in items
+        # Use : False / has item, HP empty
+        self.hero.stats['HP'] = 0
+        self.assertFalse(self.hero.use_item("Potion"))
+        self.assertEqual(self.hero.items["Potion"], 1)
+        # self.assertEqual(self.hero.stats['HP'], 0)     # checked in items
         # Use : False / doesnt have item
         self.hero.items["Potion"] = 0
         self.assertFalse(self.hero.use_item("Potion"))
-        self.assertEqual(self.hero.stats['HP'], 10)
         self.assertEqual(self.hero.items["Potion"], 0)
+        # self.assertEqual(self.hero.stats['HP'], 10)   # checked in items
         # Use : False / doesnt know item
         self.hero.items.pop("Potion")
         self.assertFalse(self.hero.use_item("Potion"))
-        self.assertEqual(self.hero.stats['HP'], 10)
         self.assertFalse("Potion" in self.hero.items)
+        # self.assertEqual(self.hero.stats['HP'], 10)   # checked in items
         # Use : False / item doesnt exist
         self.assertFalse(self.hero.use_item("Hibou"))
-        self.assertEqual(self.hero.stats['HP'], 10)
         self.assertFalse("Hibou" in self.hero.items)
+        # self.assertEqual(self.hero.stats['HP'], 10)   # checked in items
 
 
     # TODO : more simple ?
@@ -144,8 +156,10 @@ class TestHero(TestCase):
 
     # Skill test suite : Most Exclusive Case first
     def test_know_skill(self):
+        # know
         self.hero.skills["Tourment"] = 1
         self.assertTrue(self.hero.know_skill("Tourment"))
+        # Don't know
         self.hero.skills.pop("Tourment")
         self.assertFalse(self.hero.know_skill("Tourment"))
         '''
