@@ -30,6 +30,8 @@ class ItemAlt(Named):
                     text = "+ %i %s\n" % (self.bonus_stats[stat], stat)
         self.text = text
 
+    def requirement(self, hero):
+        raise NotImplementedError
 
 #######################
 ###   ITEM CLASSES  ###
@@ -46,6 +48,12 @@ class Potion(ItemAlt):
     def __init__(self, bonus=stats):
         self.bonus_stats = bonus
         ItemAlt.__init__(self)
+
+    # TO NOT TEST
+    def requirement(self, hero):
+        if hero.full_stats(self.bonus_stats) or hero.zero_stats(self.bonus_stats):
+            return False
+        return True
 
     def use(self, stats):
         for stat in self.bonus_stats:

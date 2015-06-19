@@ -69,7 +69,8 @@ class TestHero(TestCase):
         self.assertFalse("Hibou" in self.hero.items.keys())
 
     def test_use_item(self):
-
+        # def test_equip
+        # def test_
         self.hero.items["Potion"] = 2
         # Use : False / has item, HP full (hero init test OK)
         print self.hero.stats

@@ -106,6 +106,8 @@ class Hero(Fighter):
     def use_item(self, item_name):
         used = False
         if self.has_item(item_name):
+            # if item.requirement(self):
+            #   item.use()
             item = my_import('items.items', item_name)
             if self.full_stats(item().bonus_stats):
                 print "Can't use that : Full stats"
