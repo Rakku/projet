@@ -77,6 +77,9 @@ class Stone(ItemAlt):
         self.bonus_stats = bonus
         ItemAlt.__init__(self)
 
+    def requirement(self, hero):
+
+
     # add value to stat
     def use(self, max_stats):
         for stat in self.bonus_stats:
