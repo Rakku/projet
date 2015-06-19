@@ -69,8 +69,11 @@ class TestHero(TestCase):
         self.assertFalse("Hibou" in self.hero.items.keys())
 
     def test_use_item(self):
+
         self.hero.items["Potion"] = 2
         # Use : False / has item, HP full (hero init test OK)
+        print self.hero.stats
+        print self.hero.max_stats
         self.assertFalse(self.hero.use_item("Potion"))
         self.assertEqual(self.hero.items["Potion"], 2)
         # self.assertEqual(self.hero.stats['HP'], self.hero.max_stats['HP'])    # checked in items
@@ -79,7 +82,7 @@ class TestHero(TestCase):
         self.assertTrue(self.hero.use_item("Potion"))
         self.assertEqual(self.hero.items["Potion"], 1)
         # self.assertEqual(self.hero.stats['HP'], 10)     # checked in items
-        # Use : False / has item, HP empty
+        # Use : True / has item, HP empty (not supposed to occur)
         self.hero.stats['HP'] = 0
         self.assertFalse(self.hero.use_item("Potion"))
         self.assertEqual(self.hero.items["Potion"], 1)

@@ -42,6 +42,23 @@ class Fighter(Named):
     def print_hp(self):
         self.print_stat('HP')
 
+    # can check for particular stats
+    def full_stats(self, stats={}):
+        if stats == {}:
+            stats = self.stats
+        ret = True
+        for stat in stats:
+            ret = ret and self.stats[stat] == self.max_stats[stat]
+        return ret
+
+    def zero_stats(self, stats={}):
+        if stats == {}:
+            stats = self.stats
+        ret = True
+        for stat in stats:
+            ret = ret and self.stats[stat] == 0
+        return ret
+
     def full_stat(self, stat):
         return self.stats[stat] == self.max_stats[stat]
 

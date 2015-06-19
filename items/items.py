@@ -49,7 +49,8 @@ class Potion(ItemAlt):
 
     def use(self, stats):
         for stat in self.bonus_stats:
-            stats[stat] += self.bonus_stats[stat]
+            if stats[stat] > 0:
+                stats[stat] += self.bonus_stats[stat]
         # effects.gain_stats(stats, self.bonus_stats, max_stats)
 
 
