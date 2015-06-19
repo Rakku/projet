@@ -78,7 +78,7 @@ class Stone(ItemAlt):
         ItemAlt.__init__(self)
 
     def requirement(self, hero):
-
+        return hero.has_item(self.class_name())
 
     # add value to stat
     def use(self, max_stats):
@@ -99,10 +99,14 @@ class Stuff(ItemAlt):
         'EXP': 0
     }
 
-    def __init__(self, stats=bonus_stats):
+    def __init__(self, stats=bonus_stats, level=2):
         self.bonus_stats = stats
+        self.level = level
         self.equipped = False
         ItemAlt.__init__(self)
+
+    def requirement(self, hero):
+        return hero.level >= self.level
 
     def equip(self, max_stats):
         if self.equipped:
